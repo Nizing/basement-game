@@ -1,7 +1,14 @@
 local CollectionService = game:GetService("CollectionService")
+local ServerScriptService = game:GetService("ServerScriptService")
 local template = game:GetService("ServerStorage").Template
 local componentFolder = script.Parent.Components
 local tycoonStorage = game:GetService("ServerStorage").tycoonStorage
+
+local Libraries = ServerScriptService.Libraries
+
+local PlayerManager = require(Libraries.PlayerManager)
+
+
 
 local function newModel(model, cframe)
 	local newModel = model:Clone()
@@ -30,7 +37,15 @@ function Tycoon:Init()
 	self.Owner:LoadCharacter()
 	self._spawn:setAttribute("Occupied", true)
 	self:LockAll()
+	self:LoadUnlocks()
 	
+	
+end
+
+function Tycoon:LoadUnlocks()
+	for _, id in ipairs(PlayerManager:GetUnlockIds(self.Owner)) do
+		self:PublishTopic("Button", id)
+	end
 end
 
 function Tycoon:LockAll()
@@ -49,6 +64,7 @@ function Tycoon:Lock(instance)
 end
 
 function Tycoon:Unlock(instance, id)
+	PlayerManager:addUnlockId(self.Owner, id)
 	CollectionService:RemoveTag(instance, "Unlockable")
 	self:AddComponents(instance)
 	instance.Parent = self.Model
