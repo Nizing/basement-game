@@ -63,6 +63,13 @@ function PlayerManager:GetLevel(player: Player)
 	return profile.Data.Level
 end
 
+function PlayerManager:addUnlockId(player: Player)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	table.insert()
+	return profile
+end
+
 
 
 return PlayerManager
