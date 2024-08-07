@@ -12,8 +12,8 @@ function Door.new(tycoon, instance)
 	self.Instance = instance
 	self.Hinge = instance.Hinge
 	
-	self.State = false
-	self.Unlocked = false -- save this
+	self.Open = false
+	
 	return self
 end
 
@@ -34,39 +34,33 @@ function Door:MakePrompt()
 	prompt.Parent = self.Instance.Base	
 	return prompt
 end
-
-function Door:Open()
-	local goalOpen = {}
-	goalOpen.CFrame = self.Hinge.CFrame * CFrame.Angles(0, math.rad(270), 0)
+--CFrame.Angles(0, math.rad(270), 0) = open
+--CFrame.Angles(0, 0, 0) = close
+function Door:Tween(radians)
+	local goal = {}
+	goal.CFrame = self.Hinge.CFrame * CFrame.Angles(0, math.rad(radians), 0) 
 	local tweenInfo = TweenInfo.new(.7)
-	local TweenOpen = TweenService:Create(self.Hinge, tweenInfo, goalOpen)
-	return TweenOpen
-	
-end
-
-function Door:Close()
-	local goalClose = {}
-	goalClose.CFrame = self.Hinge.CFrame * CFrame.Angles(0, 0, 0)
-	local tweenInfo = TweenInfo.new(.7)
-	local TweenClose = TweenService:Create(self.Hinge, tweenInfo, goalClose)
-	return TweenClose
+	local Tween = TweenService:Create(self.Hinge, tweenInfo, goal)
+	return Tween
 end
 
 function Door:Press(player)
-	local level = PlayerManager:GetLevel(player)
-	if level > self.Instance:GetAttribute("Level") then
+	if self.Open == false then
+		self:Tween(270):Play()
+		self.Open = true
+	else
 		
-		if self.State == false then
-			self:Open():Play()
-			self.State = true
-		else
-			self:Close():Play()
-			self.State = false
-		end
+		self:Tween(-270):Play()
+		self.Open = false
 	end
 end
 
-
+--Button gets pressed
+	--Tycoon:UnlockDoor()
+	--get:attr
+	--remove tag
+	-- add door tag
+	--profit
 
 
 

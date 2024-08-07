@@ -46,6 +46,10 @@ function Tycoon:LoadUnlocks()
 	for _, id in ipairs(PlayerManager:GetUnlockIds(self.Owner)) do
 		self:PublishTopic("Button", id)
 	end
+	for _, id in ipairs(PlayerManager:GetDoorIds(self.Owner)) do
+		self:PublishTopic("DoorButton", id)
+	end
+
 end
 
 function Tycoon:LockAll()
@@ -53,7 +57,11 @@ function Tycoon:LockAll()
 		if CollectionService:HasTag(instance, "Unlockable") then
 			self:Lock(instance)
 		else
-			self:AddComponents(instance)
+			if CollectionService:HasTag(instance, "DoorUnlockable") then
+				self:LockDoor(instance)
+			else
+				self:AddComponents(instance)
+			end
 		end
 	end
 end
@@ -63,11 +71,21 @@ function Tycoon:Lock(instance)
 	self:CreateComponents(instance, componentFolder.Unlockable)
 end
 
+function Tycoon:LockDoor(instance)
+	self:CreateComponents(instance, componentFolder.DoorUnlockable)
+end
+
 function Tycoon:Unlock(instance, id)
-	PlayerManager:addUnlockId(self.Owner, id)
+	PlayerManager:AddUnlockId(self.Owner, id)
 	CollectionService:RemoveTag(instance, "Unlockable")
 	self:AddComponents(instance)
 	instance.Parent = self.Model
+end
+
+function Tycoon:UnlockDoor(instance, id)
+	PlayerManager:AddDoorId(self.Owner, id)
+	CollectionService:RemoveTag(instance, "DoorUnlockable")
+	self:AddComponents(instance)
 end
 
 function Tycoon:AddComponents(instance)

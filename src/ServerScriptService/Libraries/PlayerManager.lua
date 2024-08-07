@@ -63,14 +63,36 @@ function PlayerManager:GetLevel(player: Player)
 	return profile.Data.Level
 end
 
-function PlayerManager:addUnlockId(player: Player, unlockId : string)
+function PlayerManager:AddUnlockId(player: Player, unlockId : string)
 	local profile = self.Profiles[player]
 	if not profile then return end
-	if not table.find(profile.Data.UnlockIds) then
+	if not table.find(profile.Data.UnlockIds, unlockId) then
 		table.insert(profile.Data.UnlockIds, unlockId)
 	end
 	
 	return profile
+end
+
+function PlayerManager:GetUnlockIds(player: Player)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	return profile.Data.UnlockIds
+end
+
+function PlayerManager:AddDoorId(player: Player, unlockId : string)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	if not table.find(profile.Data.UnlockIds,unlockId) then
+		table.insert(profile.Data.UnlockIds, unlockId)
+	end
+	
+	return profile
+end
+
+function PlayerManager:GetDoorIds(player: Player)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	return profile.Data.DoorIds
 end
 
 

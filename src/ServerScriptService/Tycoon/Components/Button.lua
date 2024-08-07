@@ -21,7 +21,6 @@ end
 function Button:CreatePrompt()
 	local prompt = Instance.new("ProximityPrompt")
 	prompt.HoldDuration = 0.5
-	print(self.Instance)
 	prompt.ActionText = self.Instance:GetAttribute("Display")
 	prompt.ObjectText = "$".. self.Instance:GetAttribute("Cost")
 	
@@ -33,11 +32,17 @@ function Button:Press(player)
 	local id = self.Instance:GetAttribute("Id")
 	local cost = self.Instance:GetAttribute("Cost")
 	local money = PlayerManager:GetMoney(player)
-	
+			--If its a door
 	if player == self.Tycoon.Owner and money >= cost then
-		PlayerManager:AddMoney(player, -cost)
-		self.Tycoon:PublishTopic("Button", id)
-		self.Instance:Destroy()
+		if self.Instance:GetAttribute("Level") then
+			PlayerManager:AddMoney(player, -cost)
+			self.Tycoon:PublishTopic("DoorButton", id)
+			self.Instance:Destroy()
+		else -- if its not a door
+			PlayerManager:AddMoney(player, -cost)
+			self.Tycoon:PublishTopic("Button", id)
+			self.Instance:Destroy()
+		end
 	end
 end
 
