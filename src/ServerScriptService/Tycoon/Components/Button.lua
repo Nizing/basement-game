@@ -24,7 +24,7 @@ function Button:CreatePrompt()
 	prompt.ActionText = self.Instance:GetAttribute("Display")
 	prompt.ObjectText = "$".. self.Instance:GetAttribute("Cost")
 	
-	prompt.Parent = self.Instance	
+	prompt.Parent = self.Instance.PromptPart	
 	return prompt
 end
 

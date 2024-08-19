@@ -10,4 +10,10 @@ function MoneyHandler.giveMoney(player: Player, number: IntValue)
 	PlayerManager:AddMoney(player, number)
 end
 
+function MoneyHandler.giveTears(player: Player, number: IntValue)
+	PlayerManager:AddTears(player, number)
+end
+
+
+
 return MoneyHandler

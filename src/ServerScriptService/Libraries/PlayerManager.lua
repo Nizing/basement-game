@@ -1,9 +1,8 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local BridgeNet = require(ReplicatedStorage.Libraries.BridgeNet)
-
-local Bridge = BridgeNet.CreateBridge("Bridge")
+local Remotes = ReplicatedStorage.Remotes
+local Update_Client = Remotes.Update_Client
 
 
 
@@ -40,6 +39,33 @@ local function refreshLeaderstats(player: Player)
 	end
 end
 
+local function updateClient(player: Player, Data)
+	Update_Client:FireClient(player, Data)
+end
+
+function PlayerManager:GetData(player :  Player)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	return profile.Data
+	
+end
+function PlayerManager:GetTears(player: Player)
+	
+	local profile = self.Profiles[player]
+	if not profile then return end
+	return profile.Data.Tears
+end
+
+function PlayerManager:AddTears(player: Player, value: IntValue)
+	
+	local profile = self.Profiles[player]
+	if not profile then return end
+	profile.Data.Tears += value
+	refreshLeaderstats(player)
+	updateClient(player, profile.Data)
+	return profile
+end
+
 function PlayerManager:GetMoney(player: Player)
 	
 	local profile = self.Profiles[player]
@@ -53,6 +79,7 @@ function PlayerManager:AddMoney(player: Player, value: IntValue)
 	if not profile then return end
 	profile.Data.Money += value
 	refreshLeaderstats(player)
+	updateClient(player, profile.Data)
 	return profile
 end
 

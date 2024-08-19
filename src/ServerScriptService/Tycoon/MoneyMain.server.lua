@@ -10,10 +10,16 @@ local Moneyhandler = require(Tycoon.MoneyHandler)
 
 
 local Cry_Remote : RemoteEvent = Remotes.Cry_Remote
+local Get_Profile : RemoteFunction = Remotes.Get_Profile
 
 Cry_Remote.OnServerEvent:Connect(function(player)
-	Moneyhandler.giveMoney(player, 1)
+	Moneyhandler.giveTears(player, 1)
 end)
+
+Get_Profile.OnServerInvoke = function(player)
+	local Data = PlayerManager:GetData(player)
+	return Data
+end
 
 
 
