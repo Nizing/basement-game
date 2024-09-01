@@ -10,13 +10,19 @@ function MoneyHandler.giveMoney(player: Player, number: IntValue)
 	PlayerManager:AddMoney(player, number)
 end
 
-function MoneyHandler.giveTears(player: Player, number: IntValue)
-	PlayerManager:AddTears(player, number)
+function MoneyHandler.removeMoney(player: Player, number: IntValue)
+	PlayerManager:AddMoney(player, number * -1)
 end
 
-function MoneyHandler.removeTears(player: Player, number: IntValue)
-	PlayerManager:AddTears(player, number * -1)
+function MoneyHandler.giveById(player: Player, number: IntValue, Id : string)
+	PlayerManager:AddById(player, number, Id)
 end
+
+function MoneyHandler.removeById(player: Player, number: IntValue, Id : string)
+	PlayerManager:AddById(player, number * -1, Id)
+end
+
+
 
 
 

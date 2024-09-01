@@ -13,7 +13,12 @@ local PhoneFrame = PhoneGui.PhoneFrame
 local VideosFrame = PhoneGui.VideosFrame
 local WatchingFrame = PhoneGui.WatchingFrame
 --Phone
-local PhoneButton : TextButton = PhoneFrame.PhoneButton
+local Apps = PhoneFrame.Apps
+local NoobTube : ImageButton = Apps.NoobTube
+local StronkWorkout : ImageButton = Apps.StronkWorkout
+local MyDietPal : ImageButton = Apps.MyDietPal
+local Meditation : ImageButton = Apps.Meditation
+
 --Videos
 local VideosScrollingFrame = VideosFrame.VideosScrollingFrame
 local BackButton : TextButton = VideosFrame.BackButton
@@ -53,7 +58,8 @@ function PhoneHandler.init()
             PhoneHandler.Close()
         end
     end)
-    PhoneButton.Activated:Connect(PhoneHandler.OpenVideos)
+    NoobTube.Activated:Connect(PhoneHandler.OpenVideos)
+    
     PhoneHandler.VideosInit()
     --Videos
     BackButton.Activated:Connect(PhoneHandler.Back)

@@ -14,7 +14,7 @@ local Convert_Tears : RemoteEvent = Remotes.Convert_Tears
 local Get_Profile : RemoteFunction = Remotes.Get_Profile
 
 Cry_Remote.OnServerEvent:Connect(function(player)
-	MoneyHandler.giveTears(player, 1)
+	MoneyHandler.giveById(player, 1 , "Tears")
 end)
 
 Get_Profile.OnServerInvoke = function(player)
@@ -23,7 +23,7 @@ Get_Profile.OnServerInvoke = function(player)
 end
 
 Convert_Tears.OnServerEvent:Connect(function(player, tears, money)
-	MoneyHandler.removeTears(player, tears)
+	MoneyHandler.removeById(player, tears, "Tears")
 	MoneyHandler.giveMoney(player, money)
 end)
 

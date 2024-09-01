@@ -49,6 +49,16 @@ function PlayerManager:GetData(player :  Player)
 	return profile.Data
 	
 end
+function PlayerManager:AddById(player: Player, value: IntValue, Id)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	profile.Data[Id] += value
+	refreshLeaderstats(player)
+	updateClient(player, profile.Data)
+	return profile
+end
+
+
 function PlayerManager:GetTears(player: Player)
 	
 	local profile = self.Profiles[player]
@@ -121,6 +131,14 @@ function PlayerManager:GetDoorIds(player: Player)
 	if not profile then return end
 	return profile.Data.DoorIds
 end
+
+function PlayerManager:VideoUnlock(player : Player, index)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	profile.Data.Videos[index] = false
+end
+
+
 
 
 

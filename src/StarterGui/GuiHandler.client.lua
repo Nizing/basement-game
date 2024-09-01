@@ -1,4 +1,5 @@
 local CollectionService = game:GetService("CollectionService")
+local UserInputService = game:GetService("UserInputService")
 local StarterGui = script.Parent
 
 local MainGui = StarterGui.MainGui
@@ -13,6 +14,8 @@ local TearsFrame = MainGui.TearsFrame
 
 
 local CryButton : ImageButton = CryFrame.CryButton
+local Next : TextButton = TearsFrame.Next
+local Back : TextButton = TearsFrame.Back
 
 local LevelLabel = LevelFrame.LevelLabel
 local MoneyLabel = MoneyFrame.MoneyLabel
@@ -25,16 +28,30 @@ local MainGuiHandler = require(Handlers.MainGui)
 local PhoneHandler = require(Handlers.PhoneHandler)
 
 
-
+--Labels Updating
 MainGuiHandler.Labels_init(LevelLabel, MoneyLabel, TearsLabel)
-PhoneHandler.init()
 
-CryButton.Activated:Connect(function(inputObject, clickCount)
-    MainGuiHandler.onCry()
+Next.Activated:Connect(function()
+    MainGuiHandler.Next(TearsFrame)
+end)
+
+Back.Activated:Connect(function()
+    MainGuiHandler.Back(TearsFrame)
+end)
+
+--Phone
+PhoneHandler.init()
+--Cry
+CryButton.Activated:Connect(MainGuiHandler.onCry)
+
+UserInputService.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.C then
+        MainGuiHandler.onCry()
+    end
 end)
 
 
-
+--Collections
 for _, Button in pairs(CollectionService:GetTagged("GuiTween")) do
     local OriginalSize = Button.Size
     Button.MouseEnter:Connect(function(x, y)

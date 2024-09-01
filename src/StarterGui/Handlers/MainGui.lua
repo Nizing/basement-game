@@ -6,6 +6,7 @@ local Handlers = script.Parent
 
 local Animations = require(Handlers.Animations)
 local ProfileData = require(Handlers.ProfileData)
+local CurrencyData = require(Handlers.CurrencyData)
 
 local Cry_Remote : RemoteEvent = Remotes.Cry_Remote
 local Update_Client : RemoteEvent = Remotes.Update_Client
@@ -13,7 +14,11 @@ local Update_Client : RemoteEvent = Remotes.Update_Client
 local Player = Players.LocalPlayer
 local MainGui = {}
 
-
+--
+local function ChangeGui(currentFrame, newFrame)
+    currentFrame.Visible = false
+    newFrame.Visible = true
+end
 --Cry system
 local crydeb = false
 local crydeb_int = 0.1
@@ -38,17 +43,22 @@ local function TweenGuis(Button : ImageButton, size)
     Tween:Play()
 end
 
-
-
 --Init
 function MainGui.Labels_init(LevelLabel : TextLabel, MoneyLabel : TextLabel, TearsLabel : TextLabel)
     MainGui.UpdateGuis(LevelLabel, MoneyLabel, TearsLabel)
 
     Update_Client.OnClientEvent:Connect(function(Data)
-        
+        --Update the first two
         LevelLabel.Text = "Level: ".. Data.Level
         MoneyLabel.Text = "Money: ".. Data.Money
-        TearsLabel.Text = "Tears: ".. Data.Tears
+        --Check which gui is displaying, then if it matches with the data update, if not keep the same.
+        local TearsFrame = TearsLabel.Parent
+        local currentIndex = TearsFrame:GetAttribute("Index")
+        local currentIndexData = CurrencyData[currentIndex]
+
+        if currentIndex == currentIndexData.Index then
+            TearsLabel.Text = currentIndexData.Title .. Data[currentIndexData.Id] 
+        end
     end)
 end
 
@@ -75,5 +85,34 @@ end
 function MainGui.HoverLeave(Button, OriginalSize : UDim2)
     TweenGuis(Button, OriginalSize)
 end
+--Tears and othe currencies
+local max = 5
+local function showNewFrameInMainGui(currentIndex, Frame :  Frame)
+    local profile = ProfileData.GetProfile()
+    local Data = CurrencyData[currentIndex]
+    
+    Frame.TearsLabel.Text = Data.Title.. profile[Data.Id]
+    Frame.BackgroundColor3 = Data.BackgroundColor
+    Frame.ImageLabel.Image = Data.ImageLabel
+end
 
+function MainGui.Next(Frame : Frame)
+    local currentIndex = Frame:GetAttribute("Index")
+    currentIndex += 1
+    if currentIndex == max then currentIndex = 1 end
+    print(currentIndex)
+    Frame:SetAttribute("Index", currentIndex)
+    showNewFrameInMainGui(currentIndex, Frame)
+end
+
+function MainGui.Back(Frame)
+    local currentIndex = Frame:GetAttribute("Index")
+    currentIndex -= 1
+    if currentIndex == 0 then currentIndex = max end
+    Frame:SetAttribute("Index", currentIndex)
+    showNewFrameInMainGui(currentIndex, Frame)
+end
+
+
+--
 return MainGui
