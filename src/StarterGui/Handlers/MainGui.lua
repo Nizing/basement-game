@@ -5,8 +5,9 @@ local Remotes = ReplicatedStorage.Remotes
 local Handlers = script.Parent
 
 local Animations = require(Handlers.Animations)
+local ProfileData = require(Handlers.ProfileData)
+
 local Cry_Remote : RemoteEvent = Remotes.Cry_Remote
-local Get_Profile : RemoteFunction = Remotes.Get_Profile
 local Update_Client : RemoteEvent = Remotes.Update_Client
 
 local Player = Players.LocalPlayer
@@ -27,7 +28,7 @@ function MainGui.onCry()
         return false
     end
 end
-
+--Tweening for hovers
 local function TweenGuis(Button : ImageButton, size) 
     local goal = {}
     
@@ -37,56 +38,42 @@ local function TweenGuis(Button : ImageButton, size)
     Tween:Play()
 end
 
+
+
 --Init
 function MainGui.Labels_init(LevelLabel : TextLabel, MoneyLabel : TextLabel, TearsLabel : TextLabel)
     MainGui.UpdateGuis(LevelLabel, MoneyLabel, TearsLabel)
 
-    Update_Client.OnClientEvent:Connect(function(Data_2)
+    Update_Client.OnClientEvent:Connect(function(Data)
         
-        LevelLabel.Text = "Level: ".. Data_2.Level
-        MoneyLabel.Text = "Money: ".. Data_2.Money
-        TearsLabel.Text = "Tears: ".. Data_2.Tears
+        LevelLabel.Text = "Level: ".. Data.Level
+        MoneyLabel.Text = "Money: ".. Data.Money
+        TearsLabel.Text = "Tears: ".. Data.Tears
     end)
 end
 
---Useless kinda
+function MainGui.CloseAncestor(Button)
+    local gui = Button:FindFirstAncestorOfClass("ScreenGui")
+    gui.Enabled = false
+end
+
+--First time update
 function MainGui.UpdateGuis(LevelLabel : TextLabel, MoneyLabel : TextLabel, TearsLabel : TextLabel)
 
-    local Data = Get_Profile:InvokeServer()
+    local Data = ProfileData.GetProfile()
     LevelLabel.Text = "Level: ".. Data.Level
     MoneyLabel.Text = "Money: ".. Data.Money
     TearsLabel.Text = "Tears: ".. Data.Tears
 
 end
---Animations
-function MainGui.HoverEnter(Button : ImageButton)
-    local position = UDim2.new(-0.08, 0, -0.08, 0) 
-    local size = Button.Size + UDim2.new(0.2, 0 , 0.2 , 0)
+--Hover Animations
+function MainGui.HoverEnter(Button)
+    local size = Button.Size + UDim2.new(0, 15 , 0 , 15)
     TweenGuis(Button, size)
 end
 
-function MainGui.HoverLeave(Button : ImageButton)
-    local position = UDim2.new(0.067, 0, 0.067, 0) -- {0.067, 0},{0.067, 0}
-    local size = Button.Size - UDim2.new(0.2, 0 , 0.2 , 0) --{0.843, 0},{0.933, 0}
-    TweenGuis(Button, size)
+function MainGui.HoverLeave(Button, OriginalSize : UDim2)
+    TweenGuis(Button, OriginalSize)
 end
-
-function MainGui.FrameHoverEnter(Frame : Frame)
-    local position = UDim2.new(0.067, 0, 0.067, 0) --{0.067, 0},{0.067, 0}
-    local size = UDim2.new(0.843, 0, 0.933, 0) --{0.843, 0},{0.933, 0}
-    TweenGuis(Frame, position, size)
-end
-
-function MainGui.FrameHoverLeave(Frame : Frame)
-    local position = UDim2.new(0.067, 0, 0.067, 0) --{0.067, 0},{0.067, 0}
-    local size = UDim2.new(0.062, 0, 0.112, 0) --{0.062, 0},{0.112, 0}
-    TweenGuis(Frame, position, size)
-end
-
-
-
-
-
-
 
 return MainGui

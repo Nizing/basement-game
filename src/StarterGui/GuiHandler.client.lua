@@ -36,19 +36,22 @@ end)
 
 
 for _, Button in pairs(CollectionService:GetTagged("GuiTween")) do
+    local OriginalSize = Button.Size
     Button.MouseEnter:Connect(function(x, y)
         MainGuiHandler.HoverEnter(Button)
     end)
     Button.MouseLeave:Connect(function(x, y)
-        MainGuiHandler.HoverLeave(Button)
+        MainGuiHandler.HoverLeave(Button, OriginalSize)
     end)
 end
 
---for _, Button : TextButton in pairs(CollectionService:GetTagged("Close")) do
-    --Button.Activated:Connect(function()
-        --MainGuiHandler.Close()
-    --end)
---end
+for _, Button : TextButton in pairs(CollectionService:GetTagged("Close")) do
+    Button.Activated:Connect(function()
+        MainGuiHandler.CloseAncestor(Button)
+    end)
+end
+
+
 
 
 

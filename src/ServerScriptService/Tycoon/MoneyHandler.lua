@@ -14,6 +14,10 @@ function MoneyHandler.giveTears(player: Player, number: IntValue)
 	PlayerManager:AddTears(player, number)
 end
 
+function MoneyHandler.removeTears(player: Player, number: IntValue)
+	PlayerManager:AddTears(player, number * -1)
+end
+
 
 
 return MoneyHandler

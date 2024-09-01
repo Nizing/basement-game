@@ -6,14 +6,15 @@ local Libraries = ServerScriptService.Libraries
 local Tycoon = ServerScriptService.Tycoon
 
 local PlayerManager = require(Libraries.PlayerManager)
-local Moneyhandler = require(Tycoon.MoneyHandler)
+local MoneyHandler = require(Tycoon.MoneyHandler)
 
 
 local Cry_Remote : RemoteEvent = Remotes.Cry_Remote
+local Convert_Tears : RemoteEvent = Remotes.Convert_Tears
 local Get_Profile : RemoteFunction = Remotes.Get_Profile
 
 Cry_Remote.OnServerEvent:Connect(function(player)
-	Moneyhandler.giveTears(player, 1)
+	MoneyHandler.giveTears(player, 1)
 end)
 
 Get_Profile.OnServerInvoke = function(player)
@@ -21,6 +22,10 @@ Get_Profile.OnServerInvoke = function(player)
 	return Data
 end
 
+Convert_Tears.OnServerEvent:Connect(function(player, tears, money)
+	MoneyHandler.removeTears(player, tears)
+	MoneyHandler.giveMoney(player, money)
+end)
 
 
 
