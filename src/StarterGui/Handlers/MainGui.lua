@@ -90,7 +90,6 @@ local max = 5
 local function showNewFrameInMainGui(currentIndex, Frame :  Frame)
     local profile = ProfileData.GetProfile()
     local Data = CurrencyData[currentIndex]
-    
     Frame.TearsLabel.Text = Data.Title.. profile[Data.Id]
     Frame.BackgroundColor3 = Data.BackgroundColor
     Frame.ImageLabel.Image = Data.ImageLabel
