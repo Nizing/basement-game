@@ -8,21 +8,19 @@ local bench = Cutscene.bench
 
 local seat1 = bench.Seat1
 
-
 local CustomAnims = {}
 
 local function stopAllAnim(humanoid)
-	
-	for i,v in pairs(humanoid:GetPlayingAnimationTracks()) do
+	for i, v in pairs(humanoid:GetPlayingAnimationTracks()) do
 		v:Stop()
 	end
 end
 
-function CustomAnims.Init(humanoid : Humanoid)
+function CustomAnims.Init(humanoid: Humanoid)
 	local runTrack = humanoid.Animator:LoadAnimation(RunAnim)
 	local IdleTrack = humanoid.Animator:LoadAnimation(IdleAnim)
 	local sitTrack = humanoid.Animator:LoadAnimation(SitAnim)
-	
+
 	humanoid.Running:Connect(function(speed)
 		if speed > 0 then
 			stopAllAnim(humanoid)
@@ -32,35 +30,30 @@ function CustomAnims.Init(humanoid : Humanoid)
 			IdleTrack:Play()
 		end
 	end)
-	
+
 	local done = false
 	seat1.Touched:Connect(function(hit)
-		if done == true then return end
-		
+		if done == true then
+			return
+		end
+
 		if hit.Parent:FindFirstChild("Humanoid") then
-			humanoid.Parent:SetPrimaryPartCFrame(seat1.CFrame * CFrame.new(0, 1.3 ,0))
+			humanoid.Parent:SetPrimaryPartCFrame(seat1.CFrame * CFrame.new(0, 1.3, 0))
 			stopAllAnim(humanoid)
 			sitTrack:Play()
 			runTrack:Stop()
 			humanoid.Sit = true
-			
+
 			humanoid.Parent.HumanoidRootPart.Anchored = true
 			done = true
 		end
 	end)
-	
 end
 
-function CustomAnims.StandUp(humanoid : Humanoid)
+function CustomAnims.StandUp(humanoid: Humanoid)
 	stopAllAnim(humanoid)
 	humanoid.Sit = false
 	humanoid.Parent.HumanoidRootPart.Anchored = false
 end
-
-
-
-
-
-
 
 return CustomAnims

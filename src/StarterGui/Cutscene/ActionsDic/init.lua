@@ -28,14 +28,12 @@ local function playSounds()
 	FartSounds:Play()
 	VineBoom:play()
 	Laughing:Play()
-
 end
 
 local function stopSounds()
 	FartSounds:Stop()
 	VineBoom:Stop()
 	Laughing:Stop()
-
 end
 
 local function addFace(i, face_string, CrushCharacter)
@@ -58,7 +56,6 @@ function ActionsDic.returnActions(CrushCharacter)
 		end,
 		[10] = function()
 			CrushCharacter.Humanoid:MoveTo(Paths.Path3.Position)
-		
 		end,
 		[15] = function()
 			BGM:Stop()
@@ -74,9 +71,8 @@ function ActionsDic.returnActions(CrushCharacter)
 		[19] = function()
 			playSounds()
 			camShake:Start()
-			camShake:StartShake(2, 8 ,0 ,0)
+			camShake:StartShake(2, 8, 0, 0)
 		end,
-
 
 		[22] = function()
 			stopSounds()
@@ -85,32 +81,27 @@ function ActionsDic.returnActions(CrushCharacter)
 		[23] = function()
 			playSounds()
 			camShake:Start()
-			camShake:StartShake(2, 8 ,0 ,0)
+			camShake:StartShake(2, 8, 0, 0)
 		end,
 		[25] = function()
 			stopSounds()
 			camShake:Stop()
-
 		end,
 		[27] = function()
 			CustomAnim.StandUp(CrushCharacter.Humanoid)
 			CrushCharacter.Humanoid:MoveTo(Paths.Path4.Position)
 		end,
-
 	}
 	return Actions
 end
 
 function ActionsDic.CreateCharacter()
-	
 	local Character = Rigs.Crush:Clone()
 	Character.Parent = Cutscene
 	Character:SetPrimaryPartCFrame(Paths.SpawnPoint.CFrame)
 	CustomAnim.Init(Character.Humanoid)
-	
+
 	return Character
 end
-
-
 
 return ActionsDic
