@@ -27,6 +27,9 @@ local Handlers = StarterGui.Handlers
 local MainGuiHandler = require(Handlers.MainGui)
 local PhoneHandler = require(Handlers.PhoneHandler)
 
+local Assets = StarterGui.Assets
+local End_Cutscene : BindableEvent = Assets.End_Cutscene
+
 
 --Labels Updating
 MainGuiHandler.Labels_init(LevelLabel, MoneyLabel, TearsLabel)
@@ -40,7 +43,11 @@ Back.Activated:Connect(function()
 end)
 
 --Phone
-PhoneHandler.init()
+End_Cutscene.Event:Connect(function()
+    task.wait(1)
+    PhoneHandler.init()
+end)
+
 --Cry
 CryButton.Activated:Connect(MainGuiHandler.onCry)
 

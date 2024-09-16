@@ -12,8 +12,8 @@ local PlayerManager = require(Libraries.PlayerManager)
 
 local function newModel(model, cframe)
 	local newModel = model:Clone()
-	newModel:SetPrimaryPartCFrame(cframe)
-	
+	newModel:PivotTo(cframe)
+	print("???")
 	newModel.Parent = workspace
 	return newModel
 end
@@ -31,15 +31,18 @@ function Tycoon.new(player : Player, spawnpoint: Instance)
 end
 
 function Tycoon:Init()
-	
 	self.Model = newModel(template, self._spawn.CFrame)
-	self.Owner.RespawnLocation = self.Model.MainTemplate.Spawn
-	self.Owner:LoadCharacter()
 	self._spawn:setAttribute("Occupied", true)
 	self:LockAll()
-	self:LoadUnlocks()
-	
-	
+	--self:LoadUnlocks()
+end
+
+function Tycoon:SetSpawn(player)
+	if self.Owner.Name == player.Name then
+		self.Owner.RespawnLocation = self.Model.MainTemplate.Spawn
+		
+		return self.Owner.RespawnLocation
+	end
 end
 
 function Tycoon:LoadUnlocks()

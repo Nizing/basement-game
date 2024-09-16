@@ -1,25 +1,27 @@
 --Ids
-local RunAnim = script.run.RunAnim
-local IdleAnim = script.idle.Animation1
-local SitAnim = script.sit.SitAnim
+local playerGui = script.Parent.Parent.Parent
+local AssetsFolder = playerGui.Assets
+local RunAnim = AssetsFolder.RunAnim
+local IdleAnim = AssetsFolder.Animation1
+local SitAnim = AssetsFolder.SitAnim
 
-local Cutscene = game.Workspace.Cutscene
-local bench = Cutscene.bench
 
-local seat1 = bench.Seat1
 
 local CustomAnims = {}
 
 local function stopAllAnim(humanoid)
-	for i, v in pairs(humanoid:GetPlayingAnimationTracks()) do
+	for _, v in pairs(humanoid:GetPlayingAnimationTracks()) do
 		v:Stop()
 	end
 end
 
-function CustomAnims.Init(humanoid: Humanoid)
+function CustomAnims.Init(humanoid: Humanoid, bench)
 	local runTrack = humanoid.Animator:LoadAnimation(RunAnim)
 	local IdleTrack = humanoid.Animator:LoadAnimation(IdleAnim)
 	local sitTrack = humanoid.Animator:LoadAnimation(SitAnim)
+	local seat1 = bench.Seat1
+
+	
 
 	humanoid.Running:Connect(function(speed)
 		if speed > 0 then
@@ -38,13 +40,14 @@ function CustomAnims.Init(humanoid: Humanoid)
 		end
 
 		if hit.Parent:FindFirstChild("Humanoid") then
-			humanoid.Parent:SetPrimaryPartCFrame(seat1.CFrame * CFrame.new(0, 1.3, 0))
+			humanoid.Parent:SetPrimaryPartCFrame(seat1.CFrame * CFrame.new(0, 1.35, 0))
 			stopAllAnim(humanoid)
 			sitTrack:Play()
 			runTrack:Stop()
 			humanoid.Sit = true
-
+			task.wait(0.1)
 			humanoid.Parent.HumanoidRootPart.Anchored = true
+			
 			done = true
 		end
 	end)

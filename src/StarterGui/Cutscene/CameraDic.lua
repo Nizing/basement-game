@@ -1,11 +1,9 @@
-local CutSceneFolder = game.Workspace.Cutscene
-local Cameras = CutSceneFolder.Cameras
 local Me = game.Players.LocalPlayer.Character
 
 local CameraDic = {}
 
-function CameraDic.returnCameraDic(CrushCharacter)
-	
+function CameraDic.returnCameraDic(CrushCharacter, Assets)
+	local Cameras = Assets.Cameras
 	local CutScene = {
 		
 		[1] = {Position = Cameras.Outside1.Position, LookPosition = Me.Head.Position, Speed = 1},

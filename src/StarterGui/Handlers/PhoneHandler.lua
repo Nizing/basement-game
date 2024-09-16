@@ -3,7 +3,7 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local TeleportService = game:GetService("TeleportService")
 local player = Players.LocalPlayer
-local Phone : Tool = player:WaitForChild("Backpack"):FindFirstChild("Phone") or player.Character:FindFirstChild("Phone")
+
 
 local PlayerGui = player:WaitForChild("PlayerGui")
 
@@ -50,7 +50,7 @@ local function ChangeGui(currentFrame, newFrame)
 end
 
 function PhoneHandler.init()
-
+    local Phone : Tool = player:WaitForChild("Backpack"):FindFirstChild("Phone") or player.Character:FindFirstChild("Phone")
     Phone.Activated:Connect(function()
         if PhoneGui.Enabled == false then
             PhoneHandler.Open()

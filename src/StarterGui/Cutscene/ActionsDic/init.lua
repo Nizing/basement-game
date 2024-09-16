@@ -1,23 +1,24 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local Main_Folder = script.Parent
+local Cutscene_Folder = script.Parent
+local playerGui = Cutscene_Folder .Parent
+local AssetsFolder = playerGui.Assets
 
-local ButtonSound = Main_Folder.Button
-local BGM = Main_Folder.BGM
-local VineBoom = Main_Folder.VineBoom
-local FartSounds = Main_Folder.Fart
-local Laughing = Main_Folder.Laughing
+local ButtonSound = AssetsFolder.Button
+local BGM = AssetsFolder.BGM
+local VineBoom = AssetsFolder.VineBoom
+local FartSounds = AssetsFolder.Fart
+local Laughing = AssetsFolder.Laughing
 
-local Cutscene = game.Workspace.Cutscene
 local Rigs = ReplicatedStorage.Rigs
 --Paths
-local Paths = Cutscene.Path
+
 --Camera
 local Camera = game.Workspace.CurrentCamera
 --Modules
-local Images = require(Main_Folder.Images)
-local CameraShaker = require(Main_Folder.CameraShaker)
-local CustomAnim = require(script.CustonAnims)
+local Images = require(Cutscene_Folder.Images)
+local CameraShaker = require(script.CameraShaker)
+local CustomAnim = require(script.CustomAnims)
 
 local camShake = CameraShaker.new(Enum.RenderPriority.Camera.Value, function(shakeCf)
 	Camera.CFrame = Camera.CFrame * shakeCf
@@ -42,7 +43,8 @@ end
 
 local ActionsDic = {}
 
-function ActionsDic.returnActions(CrushCharacter)
+function ActionsDic.returnActions(CrushCharacter, Assets)
+	local Paths = Assets.Path
 	local Actions = {
 		[1] = function()
 			BGM:Play()
@@ -95,11 +97,12 @@ function ActionsDic.returnActions(CrushCharacter)
 	return Actions
 end
 
-function ActionsDic.CreateCharacter()
+function ActionsDic.CreateCharacter(Assets, bench)
+	local Paths = Assets.Path
 	local Character = Rigs.Crush:Clone()
-	Character.Parent = Cutscene
+	Character.Parent = Assets
 	Character:SetPrimaryPartCFrame(Paths.SpawnPoint.CFrame)
-	CustomAnim.Init(Character.Humanoid)
+	CustomAnim.Init(Character.Humanoid, bench)
 
 	return Character
 end
