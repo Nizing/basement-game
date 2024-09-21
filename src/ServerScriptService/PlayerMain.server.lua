@@ -26,9 +26,9 @@ Players.PlayerAdded:Connect(function(player)
 		local humanoid = character:FindFirstChild("Humanoid")
 		if humanoid then
 			humanoid.Died:Connect(function()
-				task.wait(2)
+				task.wait(3)
 				player:LoadCharacter()
-				player.Character.Humanoid.Sit = false
+				
 			end)
 		end
 	end)

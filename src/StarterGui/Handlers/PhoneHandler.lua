@@ -49,6 +49,7 @@ local function ChangeGui(currentFrame, newFrame)
     newFrame.Visible = true
 end
 
+
 function PhoneHandler.init()
     local Phone : Tool = player:WaitForChild("Backpack"):FindFirstChild("Phone") or player.Character:FindFirstChild("Phone")
     Phone.Activated:Connect(function()
@@ -58,7 +59,10 @@ function PhoneHandler.init()
             PhoneHandler.Close()
         end
     end)
-    NoobTube.Activated:Connect(PhoneHandler.OpenVideos)
+    PhoneHandler.updateLocks()
+    PhoneHandler.connectApps()
+    
+
     
     PhoneHandler.VideosInit()
     --Videos
@@ -85,6 +89,50 @@ end
 
 function PhoneHandler.OpenVideos()
     ChangeGui(PhoneFrame, VideosFrame)
+end
+
+function PhoneHandler.updateLocks()
+    local profile = ProfileData.GetProfile(player)
+    local level = profile.Level
+    
+    for _, Button in pairs(Apps:GetChildren()) do
+        if Button:GetAttribute("Level") > level then
+            local lock = ReplicatedStorage.Assets.AppLock:Clone()
+            lock.Parent = Button
+            Button.Label.Visible = false
+
+        elseif Button:FindFirstChild("AppLock") then
+            Button:FindFirstChild("AppLock"):Destroy()
+            Button.Label.Visible = true
+            if Button.Name == "NoobTube" then
+                NoobTube.Activated:Connect(PhoneHandler.OpenVideos)
+            elseif Button.Name == "StronkWorkout" then
+                --Stronk activated 
+            elseif Button.Name == "Meditation" then
+                --Meditation
+            elseif Button.Name == "MyDietPal" then
+                --Diet
+            end
+        end
+    end
+end
+
+function PhoneHandler.connectApps()
+    local profile = ProfileData.GetProfile(player)
+    local level = profile.Level
+    for _, Button in pairs(Apps:GetChildren()) do
+        if Button:GetAttribute("Level") < level then
+            if Button.Name == "NoobTube" then
+                NoobTube.Activated:Connect(PhoneHandler.OpenVideos)
+            elseif Button.Name == "StronkWorkout" then
+                --Stronk activated 
+            elseif Button.Name == "Meditation" then
+                --Meditation
+            elseif Button.Name == "MyDietPal" then
+                --Diet
+            end
+        end
+    end
 end
 
 function PhoneHandler.VideosInit()

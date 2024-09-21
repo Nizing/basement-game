@@ -6,6 +6,8 @@ local Camera = game.Workspace.CurrentCamera
 
 local Dialogue = require(script.Dialogues)
 local Images = require(script.Images)
+local ActionsDicModule = require(script.ActionsDic)
+local CameraDicModule = require(script.CameraDic)
 
 local playerGui = script.Parent
 local AssetsFolder = playerGui.Assets
@@ -18,17 +20,18 @@ local default = 0.1 -- 0.1
 local default2 = 2.5 --2.5
 
 function startGame(trash)
+	End_Cutscene:Fire()
 	Play_Cutscene:FireServer()
 	Camera.CameraType = Enum.CameraType.Custom
 	--delete temp objects
 	for _, v in pairs(trash) do
 		v:Destroy() 
 	end
-	End_Cutscene:Fire()
+	ActionsDicModule.StopEverything()
 end
 
 local function getCutsceneAssets(bench : Model)
-	task.wait(1)
+	task.wait(0.5)
 	local newAssets : Model = ReplicatedStorage.Cutscene_Assets:Clone()
     newAssets:PivotTo(bench.PrimaryPart.CFrame)
     newAssets.Parent = game.Workspace
@@ -41,8 +44,7 @@ function CutScene.Play(SpeakerLabel, ImageLabel, TextLabel, SkipButton, bench)
 	local newAssets = getCutsceneAssets(bench)
 	table.insert(trash, newAssets)
 	Camera.CameraType = Enum.CameraType.Scriptable
-	local ActionsDicModule = require(script.ActionsDic)
-	local CameraDicModule = require(script.CameraDic)
+	
 
 	local newCrush = ActionsDicModule.CreateCharacter(newAssets, bench)
 	table.insert(trash, newCrush)
@@ -56,7 +58,7 @@ function CutScene.Play(SpeakerLabel, ImageLabel, TextLabel, SkipButton, bench)
 	for j, v in pairs(Dialogue) do
 		if skip == true then
 			startGame(trash)
-			break
+			return
 		end
 
 		if CameraDic[j] then
@@ -72,7 +74,7 @@ function CutScene.Play(SpeakerLabel, ImageLabel, TextLabel, SkipButton, bench)
 		for i = 1, string.len(v.Message) do
 			if skip == true then
 				startGame(trash)
-				break
+				return
 			end
 
 			task.wait(default / CameraDic[j].Speed)
@@ -83,6 +85,23 @@ function CutScene.Play(SpeakerLabel, ImageLabel, TextLabel, SkipButton, bench)
 		task.wait(default2)
 	end
 	startGame(trash)
+end
+
+local TweenService = game:GetService("TweenService")
+
+function CutScene.cutsceneTransition(Frame)
+	local goal = {}
+	local goal2 = {}
+	goal.BackgroundTransparency = 0
+	goal2.BackgroundTransparency = 1
+	
+	local tweenInfo1 = TweenInfo.new(0.1)
+	local tweenInfo2 = TweenInfo.new(2)
+	local track1 = TweenService:Create(Frame, tweenInfo1, goal)
+	local track2 = TweenService:Create(Frame, tweenInfo2, goal2)
+	track1:Play()
+	task.wait(tweenInfo1.Time + 0.5)
+	track2:Play()
 end
 
 return CutScene

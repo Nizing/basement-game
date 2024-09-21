@@ -107,4 +107,10 @@ function ActionsDic.CreateCharacter(Assets, bench)
 	return Character
 end
 
+function ActionsDic.StopEverything()
+	BGM:Stop()
+	stopSounds()
+	camShake:Stop()
+end
+
 return ActionsDic

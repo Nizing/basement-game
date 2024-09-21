@@ -33,6 +33,14 @@ function MainGui.onCry()
         return false
     end
 end
+local function playSound(id)
+    local newSound = Instance.new("Sound")
+    newSound.SoundId = id
+    newSound.Parent = Handlers
+    newSound:Play()
+    newSound.Ended:Wait()
+    newSound:Destroy()
+end
 --Tweening for hovers
 local function TweenGuis(Button : ImageButton, size) 
     local goal = {}
@@ -41,6 +49,11 @@ local function TweenGuis(Button : ImageButton, size)
     local Tweeninfo = TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
     local Tween = TweenService:Create(Button, Tweeninfo, goal)
     Tween:Play()
+
+    Button.Activated:Connect(function()
+        local ButtonSoundId = "rbxassetid://109770729188561"
+        playSound(ButtonSoundId)
+    end)
 end
 
 --Init
@@ -48,6 +61,7 @@ function MainGui.Labels_init(LevelLabel : TextLabel, MoneyLabel : TextLabel, Tea
     MainGui.UpdateGuis(LevelLabel, MoneyLabel, TearsLabel)
 
     Update_Client.OnClientEvent:Connect(function(Data)
+        
         --Update the first two
         LevelLabel.Text = "Level: ".. Data.Level
         MoneyLabel.Text = "Money: ".. Data.Money
@@ -55,8 +69,8 @@ function MainGui.Labels_init(LevelLabel : TextLabel, MoneyLabel : TextLabel, Tea
         local TearsFrame = TearsLabel.Parent
         local currentIndex = TearsFrame:GetAttribute("Index")
         local currentIndexData = CurrencyData[currentIndex]
-
-        if currentIndex == currentIndexData.Index then
+       if currentIndex == currentIndexData.index then
+            
             TearsLabel.Text = currentIndexData.Title .. Data[currentIndexData.Id] 
         end
     end)

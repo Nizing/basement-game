@@ -3,6 +3,7 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local template = game:GetService("ServerStorage").Template
 local componentFolder = script.Parent.Components
 local tycoonStorage = game:GetService("ServerStorage").tycoonStorage
+local HouseTemplates = game:GetService("ServerStorage").HouseTemplates
 
 local Libraries = ServerScriptService.Libraries
 
@@ -13,20 +14,37 @@ local PlayerManager = require(Libraries.PlayerManager)
 local function newModel(model, cframe)
 	local newModel = model:Clone()
 	newModel:PivotTo(cframe)
-	print("???")
 	newModel.Parent = workspace
 	return newModel
+end
+local Floors = game.Workspace.DefaultHouses.HousesFloor
+
+local function removeTemplate(index)
+	for _, v in pairs(Floors:GetChildren()) do
+		if v:GetAttribute("Index") == index then
+			v.Parent = HouseTemplates
+		end
+	end
+end
+
+local function addTemplateBack(index)
+	for _, v in pairs(HouseTemplates:GetChildren()) do
+		if v:GetAttribute("Index") == index then
+			v.Parent = Floors
+		end
+	end
 end
 
 local Tycoon = {}
 Tycoon.__index = Tycoon
 
-function Tycoon.new(player : Player, spawnpoint: Instance)
+function Tycoon.new(player : Player, spawnpoint: Instance, index : number)
 	local self = setmetatable({}, Tycoon)
 	self.Owner = player
 	
 	self._topicEvent = Instance.new("BindableEvent")
 	self._spawn = spawnpoint
+	self._index = spawnpoint:GetAttribute("Index")
 	return self
 end
 
@@ -34,6 +52,7 @@ function Tycoon:Init()
 	self.Model = newModel(template, self._spawn.CFrame)
 	self._spawn:setAttribute("Occupied", true)
 	self:LockAll()
+	removeTemplate(self._index)
 	--self:LoadUnlocks()
 end
 
@@ -120,6 +139,7 @@ function Tycoon:SubscribeTopic(topicName, callback)
 end
 
 function Tycoon:Destroy()
+	addTemplateBack(self._index)
 	self.Model:Destroy()
 end
 
