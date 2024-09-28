@@ -11,10 +11,15 @@ local PlayerManager = require(Libraries.PlayerManager)
 
 
 
-local function newModel(model, cframe)
+local function newModel(model, cframe, Owner)
 	local newModel = model:Clone()
 	newModel:PivotTo(cframe)
 	newModel.Parent = workspace
+
+	for _, v : Model in pairs(newModel.MainTemplate.LevelUpSpots:GetChildren()) do
+		v:SetAttribute("Owner", Owner.Name)
+	end
+	
 	return newModel
 end
 local Floors = game.Workspace.DefaultHouses.HousesFloor
@@ -35,6 +40,7 @@ local function addTemplateBack(index)
 	end
 end
 
+
 local Tycoon = {}
 Tycoon.__index = Tycoon
 
@@ -49,8 +55,8 @@ function Tycoon.new(player : Player, spawnpoint: Instance, index : number)
 end
 
 function Tycoon:Init()
-	self.Model = newModel(template, self._spawn.CFrame)
-	self._spawn:setAttribute("Occupied", true)
+	self.Model = newModel(template, self._spawn.CFrame, self.Owner)
+	self._spawn:SetAttribute("Occupied", true)
 	self:LockAll()
 	removeTemplate(self._index)
 	--self:LoadUnlocks()

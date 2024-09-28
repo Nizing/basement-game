@@ -8,15 +8,19 @@ local Dialogue = require(script.Dialogues)
 local Images = require(script.Images)
 local ActionsDicModule = require(script.ActionsDic)
 local CameraDicModule = require(script.CameraDic)
+local Trove = require(ReplicatedStorage.Packages.Trove)
 
 local playerGui = script.Parent
 local AssetsFolder = playerGui.Assets
 local ButtonSound = AssetsFolder.Button
 local End_Cutscene : BindableEvent = AssetsFolder.End_Cutscene
 
+local player = game.Players.LocalPlayer
+local trove = Trove.new()
+
 local CutScene = {}
 
-local default = 0.1 -- 0.1
+local default = 0.05 -- 0.1
 local default2 = 2.5 --2.5
 
 function startGame(trash)
@@ -24,9 +28,8 @@ function startGame(trash)
 	Play_Cutscene:FireServer()
 	Camera.CameraType = Enum.CameraType.Custom
 	--delete temp objects
-	for _, v in pairs(trash) do
-		v:Destroy() 
-	end
+	
+	trove:Clean()
 	ActionsDicModule.StopEverything()
 end
 
@@ -42,17 +45,21 @@ function CutScene.Play(SpeakerLabel, ImageLabel, TextLabel, SkipButton, bench)
 	local skip = false
 	local trash = {}
 	local newAssets = getCutsceneAssets(bench)
-	table.insert(trash, newAssets)
+	trove:Add(newAssets)
 	Camera.CameraType = Enum.CameraType.Scriptable
 	
 
 	local newCrush = ActionsDicModule.CreateCharacter(newAssets, bench)
-	table.insert(trash, newCrush)
+	trove:Add(newCrush)
 	local ActionsDic = ActionsDicModule.returnActions(newCrush, newAssets)
 	local CameraDic = CameraDicModule.returnCameraDic(newCrush, newAssets)
 
 	SkipButton.Activated:Connect(function()
 		skip = true
+	end)
+
+	trove:Connect(player.Character.Humanoid.Died, function()
+		playerGui.CutsceneGui.onDeath.Visible = true
 	end)
 
 	for j, v in pairs(Dialogue) do

@@ -58,6 +58,15 @@ function PlayerManager:AddById(player: Player, value: IntValue, Id)
 	return profile
 end
 
+function PlayerManager:AddToTable(player: Player, value: IntValue, Table: table)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	if not table.find(profile.Data[Table], value) then
+		table.insert(profile.Data[Table], value)
+	end
+	return profile
+end
+
 
 function PlayerManager:GetTears(player: Player)
 	

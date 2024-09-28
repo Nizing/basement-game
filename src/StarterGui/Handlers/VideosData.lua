@@ -1,30 +1,64 @@
 local Videos = {
-    {
-        Title = "How to get your life back together",
-        Views = "5M",
-        Channel = "Noob Ahmed",
-        Date = "2 Years ago",
-        Thumbnail = "",
-        input = 5,
-        output = 7,
-        Duration = 5,
-        id = 1
-    },
-    {
-        Title = "Make 10k a month",
-        Views = "2M",
-        Channel = "Noob Gadzhi",
-        Date = "1 Years ago",
-        Thumbnail = "",
-        input = 6,
-        output = 9,
-        Duration = 5,
-        id = 2
-    },
-    
-    
+	{
+		Title = "How to get your life back together",
+		Views = "5.1Mln",
+		Date = "2 Years ago",
+		Channel = "Noob Ahmed",
+		Thumbnail = "rbxassetid://105686880396791",
+		input = 5,
+		output = 7,
+		Duration = 5,
+		Cost = 0,
+		id = 1,
+	},
+	{
+		Title = "How to make your first 10k",
+		Views = "14.2Mln",
+		Date = "4 Years ago",
+		Channel = "Noob Gadzhi",
+		Thumbnail = "rbxassetid://130073598773792",
+		input = 6,
+		output = 10,
+		Duration = 5,
+		Cost = 10,
+		id = 2,
+	},
+	{
+		Title = "HOW TO AVOID BEING AWKWARD",
+		Views = "670k",
+		Date = "1 Month ago",
+		Channel = "Roblox Charisma",
+        Thumbnail = "rbxassetid://120148818622341",
+		input = 8,
+		output = 30,
+		Duration = 5,
+		Cost = 50,
+		id = 3,
+	},
+	{
+		Title = "This is killing your testosterone : 12 steps you can do to reduce stress",
+		Views = "2.3Mln",
+		Date = "7 Months ago",
+		Channel = "Right now Science",
+        Thumbnail = "rbxassetid://133703702711946",
+		input = 12,
+		output = 50,
+		Duration = 5,
+		Cost = 100,
+		id = 4,
+	},
+	{
+		Title = "THE ONE HABIT THAT WILL CHANGE YOUR LIFE",
+		Views = "1.6M",
+		Date = "1 Year ago",
+		Channel = "Adonis_onBlox",
+        Thumbnail = "rbxassetid://111055416734065",
+		input = 15,
+		output = 100,
+		Duration = 5,
+		Cost = 200,
+		id = 5,
+	},
 }
-
-
 
 return Videos

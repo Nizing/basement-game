@@ -1,5 +1,6 @@
 local Players = game:GetService("Players")
 local ServerScripService = game:GetService("ServerScriptService")
+local ServerStorage = game:GetService("ServerStorage")
 
 
 local PlayerManager = require(ServerScripService.Libraries.PlayerManager)
@@ -18,6 +19,10 @@ for player in Players:GetPlayers() do
 	task.spawn(onPlayerAdded , player)
 end
 
+local function addPhone(player)
+	local new_phone = ServerStorage.Phone
+	new_phone.Parent = player.Backpack
+end
 Players.PlayerAdded:Connect(function(player)
 	onPlayerAdded(player)
 
@@ -28,7 +33,7 @@ Players.PlayerAdded:Connect(function(player)
 			humanoid.Died:Connect(function()
 				task.wait(3)
 				player:LoadCharacter()
-				
+				addPhone(player)
 			end)
 		end
 	end)

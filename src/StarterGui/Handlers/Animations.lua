@@ -21,7 +21,7 @@ function Animations.CryAnimation(player : Player)
     Cry:Play()
     newSound:Play()
     
-    task.wait(2)
+    task.wait(1)
     newAnimation:Destroy()
     newSound:Destroy()
 end

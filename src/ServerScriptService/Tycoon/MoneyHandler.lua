@@ -18,6 +18,10 @@ function MoneyHandler.giveById(player: Player, number: IntValue, Id : string)
 	PlayerManager:AddById(player, number, Id)
 end
 
+function MoneyHandler.addToTable(player: Player, number: IntValue, Table : string)
+	PlayerManager:AddToTable(player, number, Table)
+end
+
 function MoneyHandler.removeById(player: Player, number: IntValue, Id : string)
 	PlayerManager:AddById(player, number * -1, Id)
 end

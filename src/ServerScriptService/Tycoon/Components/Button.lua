@@ -40,6 +40,7 @@ function Button:Press(player)
 			self.Instance:Destroy()
 		else -- if its not a door
 			PlayerManager:AddMoney(player, -cost)
+			PlayerManager:AddById(player, 1, "ItemCount")
 			self.Tycoon:PublishTopic("Button", id)
 			self.Instance:Destroy()
 		end

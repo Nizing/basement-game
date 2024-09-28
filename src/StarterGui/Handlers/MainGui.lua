@@ -42,18 +42,20 @@ local function playSound(id)
     newSound:Destroy()
 end
 --Tweening for hovers
-local function TweenGuis(Button : ImageButton, size) 
-    local goal = {}
+local function TweenGuis(Button, size)
+    if Button:IsA("ImageButton") then
+        Button.Activated:Connect(function()
+            local ButtonSoundId = "rbxassetid://109770729188561"
+            playSound(ButtonSoundId)
+        end)
+    end
     
+
+    local goal = {}
     goal.Size = size --{1.177, 0},{1.15, 0}
     local Tweeninfo = TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
     local Tween = TweenService:Create(Button, Tweeninfo, goal)
     Tween:Play()
-
-    Button.Activated:Connect(function()
-        local ButtonSoundId = "rbxassetid://109770729188561"
-        playSound(ButtonSoundId)
-    end)
 end
 
 --Init
@@ -112,8 +114,7 @@ end
 function MainGui.Next(Frame : Frame)
     local currentIndex = Frame:GetAttribute("Index")
     currentIndex += 1
-    if currentIndex == max then currentIndex = 1 end
-    print(currentIndex)
+    if currentIndex >= max then currentIndex = 1 end
     Frame:SetAttribute("Index", currentIndex)
     showNewFrameInMainGui(currentIndex, Frame)
 end
@@ -121,7 +122,7 @@ end
 function MainGui.Back(Frame)
     local currentIndex = Frame:GetAttribute("Index")
     currentIndex -= 1
-    if currentIndex == 0 then currentIndex = max end
+    if currentIndex <= 0 then currentIndex = max - 1 end
     Frame:SetAttribute("Index", currentIndex)
     showNewFrameInMainGui(currentIndex, Frame)
 end

@@ -5,12 +5,12 @@ local Template = {
 	Physique = 0,
 	Diet = 0,
 	Mind = 0,
-	Money = 50,
+	Money = 10,
 	Level = 0,
-	
+	ItemCount = 0,
 	UnlockIds = {},
 	DoorIds = {},
-	VideoIds = {},
+	VideoIds = {1},
 }
 
 

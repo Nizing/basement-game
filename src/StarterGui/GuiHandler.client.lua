@@ -1,5 +1,9 @@
 local CollectionService = game:GetService("CollectionService")
 local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+
 local StarterGui = script.Parent
 
 local MainGui = StarterGui.MainGui
@@ -10,8 +14,6 @@ local CryFrame = MainGui.CryFrame
 local LevelFrame = MainGui.LevelFrame
 local MoneyFrame = MainGui.MoneyFrame
 local TearsFrame = MainGui.TearsFrame
-
-
 
 local CryButton : ImageButton = CryFrame.CryButton
 local Next : TextButton = TearsFrame.Next
@@ -26,6 +28,7 @@ local Handlers = StarterGui.Handlers
 
 local MainGuiHandler = require(Handlers.MainGui)
 local PhoneHandler = require(Handlers.PhoneHandler)
+local LevelUpHandler = require(Handlers.LevelUp)
 
 local Assets = StarterGui.Assets
 local End_Cutscene : BindableEvent = Assets.End_Cutscene
@@ -42,11 +45,7 @@ Back.Activated:Connect(function()
     MainGuiHandler.Back(TearsFrame)
 end)
 
---Phone
-End_Cutscene.Event:Connect(function()
-    task.wait(1)
-    PhoneHandler.init()
-end)
+
 
 --Cry
 CryButton.Activated:Connect(MainGuiHandler.onCry)
@@ -57,23 +56,39 @@ UserInputService.InputBegan:Connect(function(input)
     end
 end)
 
-
 --Collections
-for _, Button in pairs(CollectionService:GetTagged("GuiTween")) do
-    local OriginalSize = Button.Size
-    Button.MouseEnter:Connect(function(x, y)
-        MainGuiHandler.HoverEnter(Button)
-    end)
-    Button.MouseLeave:Connect(function(x, y)
-        MainGuiHandler.HoverLeave(Button, OriginalSize)
-    end)
+local function initColletions()
+    for _, Button in pairs(CollectionService:GetTagged("GuiTween")) do
+        local OriginalSize = Button.Size
+        Button.MouseEnter:Connect(function(x, y)
+            MainGuiHandler.HoverEnter(Button)
+        end)
+        Button.MouseLeave:Connect(function(x, y)
+            MainGuiHandler.HoverLeave(Button, OriginalSize)
+        end)
+    end
+    
+    for _, Button : TextButton in pairs(CollectionService:GetTagged("Close")) do
+        Button.Activated:Connect(function()
+            MainGuiHandler.CloseAncestor(Button)
+        end)
+    end
+    
+    for _, Seat in pairs(CollectionService:GetTagged("LevelUpZone")) do
+        if Seat.Parent:GetAttribute("Owner") == player.Name then
+            LevelUpHandler.Init(Seat)
+        end
+    end
 end
 
-for _, Button : TextButton in pairs(CollectionService:GetTagged("Close")) do
-    Button.Activated:Connect(function()
-        MainGuiHandler.CloseAncestor(Button)
-    end)
-end
+--Phone
+End_Cutscene.Event:Connect(function()
+    task.wait(1)
+    PhoneHandler.init()
+    initColletions()
+end)
+
+
 
 
 
