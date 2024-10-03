@@ -49,6 +49,7 @@ function PlayerManager:GetData(player :  Player)
 	return profile.Data
 	
 end
+
 function PlayerManager:AddById(player: Player, value: IntValue, Id)
 	local profile = self.Profiles[player]
 	if not profile then return end
@@ -56,6 +57,12 @@ function PlayerManager:AddById(player: Player, value: IntValue, Id)
 	refreshLeaderstats(player)
 	updateClient(player, profile.Data)
 	return profile
+end
+
+function PlayerManager:GetById(player: Player, Id)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	return profile.Data[Id]
 end
 
 function PlayerManager:AddToTable(player: Player, value: IntValue, Table: table)

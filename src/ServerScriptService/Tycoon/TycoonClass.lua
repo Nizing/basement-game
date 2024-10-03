@@ -149,4 +149,6 @@ function Tycoon:Destroy()
 	self.Model:Destroy()
 end
 
+
+
 return Tycoon

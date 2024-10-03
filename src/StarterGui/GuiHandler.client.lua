@@ -29,6 +29,7 @@ local Handlers = StarterGui.Handlers
 local MainGuiHandler = require(Handlers.MainGui)
 local PhoneHandler = require(Handlers.PhoneHandler)
 local LevelUpHandler = require(Handlers.LevelUp)
+local gamepassHandler = require(Handlers.gamepassHandler)
 
 local Assets = StarterGui.Assets
 local End_Cutscene : BindableEvent = Assets.End_Cutscene
@@ -58,7 +59,8 @@ end)
 
 --Collections
 local function initColletions()
-    for _, Button in pairs(CollectionService:GetTagged("GuiTween")) do
+
+    local function onGuiTween(Button)
         local OriginalSize = Button.Size
         Button.MouseEnter:Connect(function(x, y)
             MainGuiHandler.HoverEnter(Button)
@@ -67,13 +69,29 @@ local function initColletions()
             MainGuiHandler.HoverLeave(Button, OriginalSize)
         end)
     end
+
+    for _, Button in pairs(CollectionService:GetTagged("GuiTween")) do
+       onGuiTween(Button)
+    end
+   
+
     
     for _, Button : TextButton in pairs(CollectionService:GetTagged("Close")) do
         Button.Activated:Connect(function()
             MainGuiHandler.CloseAncestor(Button)
         end)
     end
-    
+    --monetization
+    for _, Button in pairs(CollectionService:GetTagged("GamepassButton")) do
+        gamepassHandler.configGamepass(Button)
+    end
+    CollectionService:GetInstanceAddedSignal("GamepassButton"):Connect(gamepassHandler.configGamepass)
+
+    for _, Button in pairs(CollectionService:GetTagged("DevProductButton")) do
+        gamepassHandler.configDevProduct(Button)
+    end
+    CollectionService:GetInstanceAddedSignal("GamepassButton"):Connect(gamepassHandler.configDevProduct)
+    --make seats
     for _, Seat in pairs(CollectionService:GetTagged("LevelUpZone")) do
         if Seat.Parent:GetAttribute("Owner") == player.Name then
             LevelUpHandler.Init(Seat)

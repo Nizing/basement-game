@@ -34,6 +34,7 @@ function Door:MakePrompt()
 	prompt.Parent = self.Instance.Base	
 	return prompt
 end
+
 --CFrame.Angles(0, math.rad(270), 0) = open
 --CFrame.Angles(0, 0, 0) = close
 function Door:Tween(radians)

@@ -1,3 +1,4 @@
+local Players = game:GetService("Players")
 local ServerScriptService = game:GetService("ServerScriptService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
@@ -34,6 +35,30 @@ Buy_Video.OnServerEvent:Connect(function(player, money, videoId)
 	MoneyHandler.addToTable(player, videoId, "VideoIds")
 	Buy_Video:FireClient(player)
 end)
+
+--Passive income
+for _, player in pairs(Players:GetPlayers()) do
+	task.spawn(function()
+		while true do
+			local items = PlayerManager:GetById(player, "ItemCount")
+			local multiplier = items / 5
+			MoneyHandler.giveMoney(player, math.ceil(1 * multiplier))
+			task.wait(1)
+		end
+	end)
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+	task.spawn(function()
+		while true do
+			local items = PlayerManager:GetById(player, "ItemCount")
+			local multiplier = items / 5
+			MoneyHandler.giveMoney(player, math.ceil(1 * multiplier))
+			task.wait(1)
+		end
+	end)
+end)
+
 
 
 

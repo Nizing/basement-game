@@ -6,6 +6,7 @@ local Template = {
 	Diet = 0,
 	Mind = 0,
 	Money = 10,
+	MoneyMultiplier = 1;
 	Level = 0,
 	ItemCount = 0,
 	UnlockIds = {},
