@@ -43,11 +43,14 @@ local function updateClient(player: Player, Data)
 	Update_Client:FireClient(player, Data)
 end
 
+function PlayerManager:Loaded(player: Player)
+	return self.Profiles[player] 
+end
+
 function PlayerManager:GetData(player :  Player)
 	local profile = self.Profiles[player]
 	if not profile then return end
 	return profile.Data
-	
 end
 
 function PlayerManager:AddById(player: Player, value: IntValue, Id)

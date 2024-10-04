@@ -20,7 +20,7 @@ for player in Players:GetPlayers() do
 end
 
 local function addPhone(player)
-	local new_phone = ServerStorage.Phone
+	local new_phone = ServerStorage.Phone:Clone()
 	new_phone.Parent = player.Backpack
 end
 Players.PlayerAdded:Connect(function(player)

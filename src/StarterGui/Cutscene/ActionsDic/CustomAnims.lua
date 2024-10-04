@@ -32,8 +32,14 @@ function CustomAnims.Init(humanoid: Humanoid, bench)
 			IdleTrack:Play()
 		end
 	end)
-
+	
 	local done = false
+
+	task.spawn(function()
+		task.wait(10)
+		done = true
+	end)
+
 	seat1.Touched:Connect(function(hit)
 		if done == true then
 			return

@@ -197,7 +197,8 @@ function PhoneHandler.VideosInit()
 					PhoneHandler.onVideoClick(Data)
 				else
 					LocalAssets.MistakeSound:Play()
-                    guiAnimation.popUpNotEnough(newFrame, NotEnoughTears)
+                   
+                    guiAnimation.createDynamicPopup(NotEnoughTears, newFrame)
 				end
 			end)            
 		else --if it is not unlocked

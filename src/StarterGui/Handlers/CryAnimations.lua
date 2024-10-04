@@ -1,3 +1,11 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local guiAnimation = require(script.Parent.guiAnimation)
+
+local TearsPopUp = ReplicatedStorage.Assets.TearsPopUp
+local player = Players.LocalPlayer
+local Transitions = player.PlayerGui.Transitions
 local Animations = {}
 
 local CryId = "rbxassetid://18991841924"
@@ -20,7 +28,7 @@ function Animations.CryAnimation(player : Player)
     local Cry = Animator:LoadAnimation(newAnimation)
     Cry:Play()
     newSound:Play()
-    
+    guiAnimation.createDynamicPopup(TearsPopUp, Transitions)
     task.wait(1)
     newAnimation:Destroy()
     newSound:Destroy()

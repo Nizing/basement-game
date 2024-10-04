@@ -28,7 +28,6 @@ local Handlers = StarterGui.Handlers
 
 local MainGuiHandler = require(Handlers.MainGui)
 local PhoneHandler = require(Handlers.PhoneHandler)
-local LevelUpHandler = require(Handlers.LevelUp)
 local gamepassHandler = require(Handlers.gamepassHandler)
 
 local Assets = StarterGui.Assets
@@ -91,12 +90,6 @@ local function initColletions()
         gamepassHandler.configDevProduct(Button)
     end
     CollectionService:GetInstanceAddedSignal("GamepassButton"):Connect(gamepassHandler.configDevProduct)
-    --make seats
-    for _, Seat in pairs(CollectionService:GetTagged("LevelUpZone")) do
-        if Seat.Parent:GetAttribute("Owner") == player.Name then
-            LevelUpHandler.Init(Seat)
-        end
-    end
 end
 
 --Phone

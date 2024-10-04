@@ -4,7 +4,7 @@ local Players = game:GetService("Players")
 local Remotes = ReplicatedStorage.Remotes
 local Handlers = script.Parent
 
-local Animations = require(Handlers.Animations)
+local CryAnimations = require(Handlers.CryAnimations)
 local ProfileData = require(Handlers.ProfileData)
 local CurrencyData = require(Handlers.CurrencyData)
 
@@ -26,13 +26,14 @@ function MainGui.onCry()
     if crydeb == false then
         crydeb = true
         Cry_Remote:FireServer()
-        Animations.CryAnimation(Player)
+        CryAnimations.CryAnimation(Player)
         task.wait(crydeb_int)
         crydeb = false
     else
         return false
     end
 end
+
 local function playSound(id)
     local newSound = Instance.new("Sound")
     newSound.SoundId = id

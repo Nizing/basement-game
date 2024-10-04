@@ -29,8 +29,7 @@ function Door:MakePrompt()
 	prompt.HoldDuration = 0.5
 	
 	prompt.ActionText = self.Instance:GetAttribute("Display")
-	prompt.ObjectText = self.Instance:GetAttribute("Level").."Levels Needed"
-
+	
 	prompt.Parent = self.Instance.Base	
 	return prompt
 end
@@ -49,20 +48,13 @@ function Door:Press(player)
 	if self.Open == false then
 		self:Tween(270):Play()
 		self.Open = true
+		self.Prompt.ActionText = "Close Door"
 	else
 		
 		self:Tween(-270):Play()
 		self.Open = false
+		self.Prompt.ActionText = "Open Door"
 	end
 end
-
---Button gets pressed
-	--Tycoon:UnlockDoor()
-	--get:attr
-	--remove tag
-	-- add door tag
-	--profit
-
-
 
 return Door

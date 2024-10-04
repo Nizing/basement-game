@@ -16,10 +16,7 @@ local function newModel(model, cframe, Owner)
 	newModel:PivotTo(cframe)
 	newModel.Parent = workspace
 
-	for _, v : Model in pairs(newModel.MainTemplate.LevelUpSpots:GetChildren()) do
-		v:SetAttribute("Owner", Owner.Name)
-	end
-	
+
 	return newModel
 end
 local Floors = game.Workspace.DefaultHouses.HousesFloor
