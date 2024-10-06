@@ -7,6 +7,7 @@ local Handlers = script.Parent
 local CryAnimations = require(Handlers.CryAnimations)
 local ProfileData = require(Handlers.ProfileData)
 local CurrencyData = require(Handlers.CurrencyData)
+local Format = require(ReplicatedStorage.FormatNumbers)
 
 local Cry_Remote : RemoteEvent = Remotes.Cry_Remote
 local Update_Client : RemoteEvent = Remotes.Update_Client
@@ -66,15 +67,15 @@ function MainGui.Labels_init(LevelLabel : TextLabel, MoneyLabel : TextLabel, Tea
     Update_Client.OnClientEvent:Connect(function(Data)
         
         --Update the first two
-        LevelLabel.Text = "Level: ".. Data.Level
-        MoneyLabel.Text = "Money: ".. Data.Money
+        LevelLabel.Text = "Level: ".. Format.FormatCompact(Data.Level)
+        MoneyLabel.Text = "Money: ".. Format.FormatCompact(Data.Money)
         --Check which gui is displaying, then if it matches with the data update, if not keep the same.
         local TearsFrame = TearsLabel.Parent
         local currentIndex = TearsFrame:GetAttribute("Index")
         local currentIndexData = CurrencyData[currentIndex]
        if currentIndex == currentIndexData.index then
             
-            TearsLabel.Text = currentIndexData.Title .. Data[currentIndexData.Id] 
+            TearsLabel.Text = currentIndexData.Title .. Format.FormatCompact(Data[currentIndexData.Id])
         end
     end)
 end
@@ -88,9 +89,9 @@ end
 function MainGui.UpdateGuis(LevelLabel : TextLabel, MoneyLabel : TextLabel, TearsLabel : TextLabel)
 
     local Data = ProfileData.GetProfile()
-    LevelLabel.Text = "Level: ".. Data.Level
-    MoneyLabel.Text = "Money: ".. Data.Money
-    TearsLabel.Text = "Tears: ".. Data.Tears
+    LevelLabel.Text = "Level: ".. Format.FormatCompact(Data.Level)
+    MoneyLabel.Text = "Money: ".. Format.FormatCompact(Data.Money)
+    TearsLabel.Text = "Tears: ".. Format.FormatCompact(Data.Tears)
 
 end
 --Hover Animations

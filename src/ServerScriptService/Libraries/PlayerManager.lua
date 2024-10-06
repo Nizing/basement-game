@@ -157,6 +157,14 @@ function PlayerManager:VideoUnlock(player : Player, index)
 	profile.Data.Videos[index] = false
 end
 
+function PlayerManager:SetValueInTableByIndex(player : Player, value : IntValue, Table, index)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	print(index)
+	print(profile.Data[Table][index])
+	profile.Data[Table][index] = value
+end
+
 
 
 

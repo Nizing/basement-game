@@ -10,6 +10,7 @@ local Animations = {}
 
 local CryId = "rbxassetid://18991841924"
 local CrySoundId = "rbxassetid://18996955548"
+
 function Animations.CryAnimation(player : Player)
     local character = player.Character
     local humanoid = character:FindFirstChild("Humanoid")

@@ -1,5 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local PlayerManager = require(game:GetService("ServerScriptService").Libraries.PlayerManager)
+local FormatNumbers = require(ReplicatedStorage.FormatNumbers)
 
 local Button = {}
 Button.__index = Button
@@ -13,11 +14,16 @@ end
 
 function Button:Init()
     self:CreateBillboardGui()
+    local deb = false
     self.Instance.PromptPart.Touched:Connect(function(hit)
+        if deb == true then return end
+        deb = true
         local player = game.Players:GetPlayerFromCharacter(hit.Parent)
         if player and player.Name == self.Tycoon.Owner.Name then
             self:Press(player)
         end
+        task.wait(0.5)
+        deb = false
     end)
 end
 
@@ -67,7 +73,7 @@ function Button:CreateBillboardGui()
 	fontFace2.Weight = Enum.FontWeight.Medium
 	costLabel.FontFace = fontFace2
 
-    costLabel.Text = "$" .. (self.Instance:GetAttribute("Cost") or 0)
+    costLabel.Text = "$" .. (FormatNumbers.FormatCompact(self.Instance:GetAttribute("Cost")) or 0)
     costLabel.Parent = frame
 
     billboardGui.Parent = self.Instance
@@ -85,6 +91,8 @@ function playSound(Id, player)
 end
 local Remotes = ReplicatedStorage.Remotes
 local Not_Enough_Money : RemoteEvent = Remotes.Not_Enough_Money
+local Level_Too_Low : RemoteEvent = Remotes.Level_Too_Low
+local Update_Phone : RemoteEvent = Remotes.Update_Phone
 function Button:Press(player)
     local id = self.Instance:GetAttribute("Id")
     local cost = self.Instance:GetAttribute("Cost")
@@ -96,17 +104,20 @@ function Button:Press(player)
 	end
 	
     if player == self.Tycoon.Owner and money >= cost then
-		playSound(UnlockSoundId, player)
-        -- If it's a door
+		-- If it's a door
         if self.Instance:GetAttribute("door") then
-            if level < self.Instance:GetAttribute("Level") then return end
+            if level < self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return 
+            else Update_Phone:FireClient(player) end
+            playSound(UnlockSoundId, player)
             PlayerManager:AddMoney(player, -cost)
             self.Tycoon:PublishTopic("DoorButton", id)
             self.Instance:Destroy()
         else -- if it's not a door
-            if self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then 
-                return 
-            end
+            
+            if self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return
+            else Update_Phone:FireClient(player) end
+
+            playSound(UnlockSoundId, player)
             PlayerManager:AddMoney(player, -cost)
             PlayerManager:AddById(player, 1, "ItemCount")
             self.Tycoon:PublishTopic("Button", id)

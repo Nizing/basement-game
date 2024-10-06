@@ -68,6 +68,77 @@ function guiAnimation.createDynamicPopup(template, parent)
     end)
 end
 
+function guiAnimation.popupFrame(frame, duration)
+	-- Store the original position and size
+	local originalPosition = frame.Position
+	local originalSize = frame.Size
+
+	-- Calculate the starting position (below the screen)
+	local startPosition = UDim2.new(
+		originalPosition.X.Scale, 
+		originalPosition.X.Offset, 
+		1, -- Start from the bottom of the screen
+		frame.AbsoluteSize.Y -- Offset by the frame's height
+	)
+
+	-- Set initial state: at the starting position with zero height
+	frame.Position = startPosition
+	frame.Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 0)
+
+	-- Create and play the size tween
+	local sizeTween = game:GetService("TweenService"):Create(
+		frame,
+		TweenInfo.new(duration, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+		{Size = originalSize}
+	)
+	sizeTween:Play()
+
+	-- Create and play the position tween
+	local positionTween = game:GetService("TweenService"):Create(
+		frame,
+		TweenInfo.new(duration, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+		{Position = originalPosition}
+	)
+	positionTween:Play()
+end
+
+function guiAnimation.closeFrame(frame, duration)
+    -- Store the original position and size
+    local originalPosition = frame.Position
+    local originalSize = frame.Size
+
+    -- Calculate the ending position (below the screen)
+    local endPosition = UDim2.new(
+        originalPosition.X.Scale, 
+        originalPosition.X.Offset, 
+        1, -- End at the bottom of the screen
+        frame.AbsoluteSize.Y -- Offset by the frame's height
+    )
+
+    -- Create and play the size tween
+    local sizeTween = game:GetService("TweenService"):Create(
+        frame,
+        TweenInfo.new(duration, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+        {Size = UDim2.new(originalSize.X.Scale, originalSize.X.Offset, 0, 0)}
+    )
+    sizeTween:Play()
+
+    -- Create and play the position tween
+    local positionTween = game:GetService("TweenService"):Create(
+        frame,
+        TweenInfo.new(duration, Enum.EasingStyle.Back, Enum.EasingDirection.In),
+        {Position = endPosition}
+    )
+    positionTween:Play()
+
+    -- Wait for the tweens to complete before returning
+    task.wait(duration)
+
+    -- Reset the frame's position and size to their original values
+    frame.Position = originalPosition
+    frame.Size = originalSize
+end
+
 
 
 return guiAnimation

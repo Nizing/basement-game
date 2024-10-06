@@ -34,6 +34,7 @@ Players.PlayerAdded:Connect(function(player)
 				task.wait(3)
 				player:LoadCharacter()
 				addPhone(player)
+				
 			end)
 		end
 	end)

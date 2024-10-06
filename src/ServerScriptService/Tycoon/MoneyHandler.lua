@@ -22,6 +22,10 @@ function MoneyHandler.addToTable(player: Player, number: IntValue, Table : strin
 	PlayerManager:AddToTable(player, number, Table)
 end
 
+function MoneyHandler.setUpgradeLevel(player : Player, level : IntValue, index)
+	PlayerManager:SetValueInTableByIndex(player, level, "Upgrades", index)
+end
+
 function MoneyHandler.removeById(player: Player, number: IntValue, Id : string)
 	PlayerManager:AddById(player, number * -1, Id)
 end

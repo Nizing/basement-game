@@ -69,9 +69,6 @@ function PhoneHandler.init()
     end)
     PhoneHandler.updateLocks()
     PhoneHandler.connectApps()
-    
-
-    
     PhoneHandler.VideosInit()
     --Videos
     BackButton.Activated:Connect(PhoneHandler.Back)
@@ -81,6 +78,7 @@ end
 function PhoneHandler.Open()
     PhoneGui.Enabled = true
     PhoneFrame.Visible = true
+    guiAnimation.popupFrame(PhoneFrame, 1)
 
     VideosFrame.Visible = false
     WatchingFrame.Visible = false

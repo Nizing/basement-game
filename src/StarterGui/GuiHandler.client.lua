@@ -1,4 +1,5 @@
 local CollectionService = game:GetService("CollectionService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
 local Players = game:GetService("Players")
 
@@ -32,6 +33,8 @@ local gamepassHandler = require(Handlers.gamepassHandler)
 
 local Assets = StarterGui.Assets
 local End_Cutscene : BindableEvent = Assets.End_Cutscene
+
+local Update_Phone : RemoteEvent = ReplicatedStorage.Remotes.Update_Phone
 
 
 --Labels Updating
@@ -73,7 +76,7 @@ local function initColletions()
        onGuiTween(Button)
     end
    
-
+    
     
     for _, Button : TextButton in pairs(CollectionService:GetTagged("Close")) do
         Button.Activated:Connect(function()
@@ -97,6 +100,10 @@ End_Cutscene.Event:Connect(function()
     task.wait(1)
     PhoneHandler.init()
     initColletions()
+end)
+
+Update_Phone.OnClientEvent:Connect(function()
+    PhoneHandler.updateLocks()
 end)
 
 
