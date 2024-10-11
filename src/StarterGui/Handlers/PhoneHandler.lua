@@ -9,6 +9,7 @@ local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 
 local PhoneGui = PlayerGui.PhoneGui
+local Transitions = PlayerGui.Transitions
 --Frames
 local PhoneFrame = PhoneGui.PhoneFrame
 local VideosFrame = PhoneGui.VideosFrame
@@ -16,9 +17,9 @@ local WatchingFrame = PhoneGui.WatchingFrame
 --Phone
 local Apps = PhoneFrame.Apps
 local NoobTube : ImageButton = Apps.NoobTube
-local StronkWorkout : ImageButton = Apps.StronkWorkout
-local MyDietPal : ImageButton = Apps.MyDietPal
-local Meditation : ImageButton = Apps.Meditation
+--local StronkWorkout : ImageButton = Apps.StronkWorkout
+--local MyDietPal : ImageButton = Apps.MyDietPal
+--local Looksmaxing : ImageButton = Apps.Looksmaxing
 
 --Videos
 local VideosScrollingFrame = VideosFrame.VideosScrollingFrame
@@ -36,6 +37,7 @@ local VideosData = require(Handlers.VideosData)
 local ProfileData = require(Handlers.ProfileData)
 local guiAnimation = require(Handlers.guiAnimation)
 local TroveModule = require(Packages.Trove)
+local FormatNumbers = require(ReplicatedStorage.FormatNumbers)
 
 local LocalAssets = PlayerGui.Assets
 local Assets = ReplicatedStorage.Assets
@@ -43,6 +45,7 @@ local Remotes = ReplicatedStorage.Remotes
 
 local NotEnoughTears = Assets.NotEnoughTears
 local NotEnoughMoney = Assets.NotEnoughMoney
+local MoneyPopUp = Assets.MoneyPopUp
 
 local Convert_Tears : RemoteEvent = Remotes.Convert_Tears
 local Buy_Video : RemoteEvent= Remotes.Buy_Video
@@ -114,8 +117,8 @@ function PhoneHandler.updateLocks()
                 NoobTube.Activated:Connect(PhoneHandler.OpenVideos)
             elseif Button.Name == "StronkWorkout" then
                 --Stronk activated 
-            elseif Button.Name == "Meditation" then
-                --Meditation
+            elseif Button.Name == "Looksmaxing" then
+                --Looksmaxing
             elseif Button.Name == "MyDietPal" then
                 --Diet
             end
@@ -239,6 +242,9 @@ function PhoneHandler.onVideoClick(Data)
     local perc = 0
     WatchingFrame.SliderFrame.Slider.Size = UDim2.fromScale(0, 1)
 
+    WatchingFrame.YoutubeLabel.Text = Data.Title
+    WatchingFrame.Thumbnail.Image = Data.Thumbnail
+
     Trove:Connect(ConcentrateButton.Activated, function()
         if PauseLabel.Visible == false then return end
 
@@ -251,13 +257,17 @@ function PhoneHandler.onVideoClick(Data)
         until perc >= 100 / Data.Duration + dummyperc
         dummyperc = perc
         pauseVideo(PlayingLabel, PauseLabel)
-        
+        --Give the player the moneyyyy
         if perc >= 100 then
-            
+            ChangeGui(WatchingFrame, VideosFrame)
             Convert_Tears:FireServer(Data.input, Data.output)
             WatchingFrame.SliderFrame.Slider.Size = UDim2.fromScale(0, 1)
+
+            local text = "+ ".. FormatNumbers.FormatCompact(Data.output).. " Money"
+            task.spawn(function()
+                guiAnimation.createDynamicPopup(MoneyPopUp, Transitions, text)
+            end)
             
-            ChangeGui(WatchingFrame, VideosFrame)
             Trove:Clean()
             return
         end

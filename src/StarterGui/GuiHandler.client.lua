@@ -8,15 +8,19 @@ local player = Players.LocalPlayer
 local StarterGui = script.Parent
 
 local MainGui = StarterGui.MainGui
-local SettingsGui = StarterGui.SettingsGui
+local LevelUpGui = StarterGui.LevelUp
 
+local SettingsGui = StarterGui.SettingsGui
+local LevelUpFrame = MainGui.LevelUpGui
 
 local CryFrame = MainGui.CryFrame
 local LevelFrame = MainGui.LevelFrame
 local MoneyFrame = MainGui.MoneyFrame
 local TearsFrame = MainGui.TearsFrame
 
+
 local CryButton : ImageButton = CryFrame.CryButton
+local LevelUpButton : ImageButton = LevelUpFrame.LevelUpButton
 local Next : TextButton = TearsFrame.Next
 local Back : TextButton = TearsFrame.Back
 
@@ -30,6 +34,7 @@ local Handlers = StarterGui.Handlers
 local MainGuiHandler = require(Handlers.MainGui)
 local PhoneHandler = require(Handlers.PhoneHandler)
 local gamepassHandler = require(Handlers.gamepassHandler)
+local guiAnimation = require(Handlers.guiAnimation)
 
 local Assets = StarterGui.Assets
 local End_Cutscene : BindableEvent = Assets.End_Cutscene
@@ -55,7 +60,7 @@ CryButton.Activated:Connect(MainGuiHandler.onCry)
 
 UserInputService.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.C then
-        MainGuiHandler.onCry()
+       MainGuiHandler.onCry()
     end
 end)
 
@@ -65,7 +70,8 @@ local function initColletions()
     local function onGuiTween(Button)
         local OriginalSize = Button.Size
         Button.MouseEnter:Connect(function(x, y)
-            MainGuiHandler.HoverEnter(Button)
+            MainGuiHandler.HoverEnter(Button, OriginalSize)
+            
         end)
         Button.MouseLeave:Connect(function(x, y)
             MainGuiHandler.HoverLeave(Button, OriginalSize)
@@ -83,6 +89,18 @@ local function initColletions()
             MainGuiHandler.CloseAncestor(Button)
         end)
     end
+
+    for _, Button in pairs(CollectionService:GetTagged("ClickAnimation")) do
+        local deb = false
+        Button.Activated:Connect(function()
+            if deb == true then return end
+            deb = true
+            guiAnimation.ButtonOnClick(Button)
+            task.wait(0.2)
+            deb = false
+        end)
+    end
+
     --monetization
     for _, Button in pairs(CollectionService:GetTagged("GamepassButton")) do
         gamepassHandler.configGamepass(Button)
@@ -105,6 +123,20 @@ end)
 Update_Phone.OnClientEvent:Connect(function()
     PhoneHandler.updateLocks()
 end)
+
+LevelUpButton.Activated:Connect(function()
+    
+    if LevelUpGui.Enabled == false then
+        LevelUpGui.Enabled = true
+        guiAnimation.animateGUI(LevelUpGui.Frame)
+    else
+        guiAnimation.animateGUIClose(LevelUpGui.Frame)
+        LevelUpGui.Enabled = false
+    end
+    
+end)
+
+
 
 
 

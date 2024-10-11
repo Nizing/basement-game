@@ -65,18 +65,18 @@ function MainGui.Labels_init(LevelLabel : TextLabel, MoneyLabel : TextLabel, Tea
     MainGui.UpdateGuis(LevelLabel, MoneyLabel, TearsLabel)
 
     Update_Client.OnClientEvent:Connect(function(Data)
-        
         --Update the first two
         LevelLabel.Text = "Level: ".. Format.FormatCompact(Data.Level)
         MoneyLabel.Text = "Money: ".. Format.FormatCompact(Data.Money)
+        MoneyLabel.Parent.MoneyPerSecondFrame.Income.Text = Format.FormatCompact(Data.Multipliers["Money"] * Data.ItemCount).. " / S"
         --Check which gui is displaying, then if it matches with the data update, if not keep the same.
         local TearsFrame = TearsLabel.Parent
         local currentIndex = TearsFrame:GetAttribute("Index")
         local currentIndexData = CurrencyData[currentIndex]
-       if currentIndex == currentIndexData.index then
-            
+        if currentIndex == currentIndexData.index then
             TearsLabel.Text = currentIndexData.Title .. Format.FormatCompact(Data[currentIndexData.Id])
         end
+        
     end)
 end
 
@@ -92,10 +92,10 @@ function MainGui.UpdateGuis(LevelLabel : TextLabel, MoneyLabel : TextLabel, Tear
     LevelLabel.Text = "Level: ".. Format.FormatCompact(Data.Level)
     MoneyLabel.Text = "Money: ".. Format.FormatCompact(Data.Money)
     TearsLabel.Text = "Tears: ".. Format.FormatCompact(Data.Tears)
-
 end
 --Hover Animations
-function MainGui.HoverEnter(Button)
+function MainGui.HoverEnter(Button, OriginalSize)
+    Button.Size = OriginalSize
     local size = Button.Size + UDim2.new(0, 15 , 0 , 15)
     TweenGuis(Button, size)
 end
@@ -108,7 +108,7 @@ local max = 5
 local function showNewFrameInMainGui(currentIndex, Frame :  Frame)
     local profile = ProfileData.GetProfile()
     local Data = CurrencyData[currentIndex]
-    Frame.TearsLabel.Text = Data.Title.. profile[Data.Id]
+    Frame.TearsLabel.Text = Data.Title.. Format.FormatCompact(profile[Data.Id])
     Frame.BackgroundColor3 = Data.BackgroundColor
     Frame.ImageLabel.Image = Data.ImageLabel
 end

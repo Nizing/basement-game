@@ -62,6 +62,15 @@ function PlayerManager:AddById(player: Player, value: IntValue, Id)
 	return profile
 end
 
+function PlayerManager:SetById(player: Player, value: IntValue, Id)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	profile.Data[Id] = value
+	refreshLeaderstats(player)
+	updateClient(player, profile.Data)
+	return profile
+end
+
 function PlayerManager:GetById(player: Player, Id)
 	local profile = self.Profiles[player]
 	if not profile then return end
@@ -83,16 +92,6 @@ function PlayerManager:GetTears(player: Player)
 	local profile = self.Profiles[player]
 	if not profile then return end
 	return profile.Data.Tears
-end
-
-function PlayerManager:AddTears(player: Player, value: IntValue)
-	
-	local profile = self.Profiles[player]
-	if not profile then return end
-	profile.Data.Tears += value
-	refreshLeaderstats(player)
-	updateClient(player, profile.Data)
-	return profile
 end
 
 function PlayerManager:GetMoney(player: Player)
@@ -156,13 +155,18 @@ function PlayerManager:VideoUnlock(player : Player, index)
 	if not profile then return end
 	profile.Data.Videos[index] = false
 end
-
+--Use this for upgrades and levels
 function PlayerManager:SetValueInTableByIndex(player : Player, value : IntValue, Table, index)
 	local profile = self.Profiles[player]
 	if not profile then return end
-	print(index)
-	print(profile.Data[Table][index])
+
 	profile.Data[Table][index] = value
+end
+
+function PlayerManager:GetMultiplier(player : Player, Index : string)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	return profile.Data.Multipliers[Index]
 end
 
 

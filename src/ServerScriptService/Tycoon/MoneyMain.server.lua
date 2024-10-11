@@ -14,17 +14,19 @@ local Cry_Remote : RemoteEvent = Remotes.Cry_Remote
 local Convert_Tears : RemoteEvent = Remotes.Convert_Tears
 local Buy_Video : RemoteEvent = Remotes.Buy_Video
 local Buy_Upgrade : RemoteEvent = Remotes.Buy_Upgrade
+local Update_Multiplier : RemoteEvent = Remotes.Update_Multiplier
 local Add_Strength : RemoteEvent = Remotes.Give_Strength
+local Level_Up : RemoteEvent = Remotes.Level_Up
 local Get_Profile : RemoteFunction = Remotes.Get_Profile
-
-
+--temp
+--local Level_Up : RemoteEvent = Remotes.Level_Up
 
 Cry_Remote.OnServerEvent:Connect(function(player)
-	MoneyHandler.giveById(player, 1 , "Tears")
+	MoneyHandler.giveById_Multiplier(player, 1 , "Tears")
 end)
 
 Add_Strength.OnServerEvent:Connect(function(player)
-	MoneyHandler.giveById(player, 1, "Physique")
+	MoneyHandler.giveById_Multiplier(player, 1, "Physique")
 end)
 
 Get_Profile.OnServerInvoke = function(player)
@@ -43,9 +45,18 @@ Buy_Video.OnServerEvent:Connect(function(player, money, videoId)
 	Buy_Video:FireClient(player)
 end)
 
-Buy_Upgrade.OnServerEvent:Connect(function(player, Currency, Cost, level, index)
+Buy_Upgrade.OnServerEvent:Connect(function(player : Player, Currency : string, Cost : number, level : number, index  : number)
 	MoneyHandler.removeById(player, Cost, Currency)
 	MoneyHandler.setUpgradeLevel(player, level, index)
+end)
+
+Level_Up.OnServerEvent:Connect(function(player : Player, Currency : string, Cost : number, level : number, index : number)
+	MoneyHandler.removeById(player, Cost, Currency)
+	MoneyHandler.setLevelUpLevel(player, level, index)
+end)
+
+Update_Multiplier.OnServerEvent:Connect(function(player : Player, Currency : string, Income : number)
+	MoneyHandler.setMultiplier(player, Currency, Income)
 end)
 
 local function passiveIncome(player)
@@ -57,7 +68,8 @@ local function passiveIncome(player)
 		if not player then break end
 		local items = PlayerManager:GetById(player, "ItemCount")
 		local multiplier = items
-		MoneyHandler.giveMoney(player, 1 * multiplier * PlayerManager:GetById(player, "MoneyMultiplier"))
+		if not multiplier then return end
+		MoneyHandler.giveMoney_Multiplier(player, 1 * multiplier)
 		task.wait(1)
 	end
 end

@@ -2,6 +2,8 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local guiAnimation = require(script.Parent.guiAnimation)
+local profileModule = require(script.Parent.ProfileData)
+local FormatNumbers = require(ReplicatedStorage.FormatNumbers)
 
 local TearsPopUp = ReplicatedStorage.Assets.TearsPopUp
 local player = Players.LocalPlayer
@@ -29,8 +31,12 @@ function Animations.CryAnimation(player : Player)
     local Cry = Animator:LoadAnimation(newAnimation)
     Cry:Play()
     newSound:Play()
-    guiAnimation.createDynamicPopup(TearsPopUp, Transitions)
-    task.wait(1)
+
+    local profile = profileModule.GetProfile()
+    local Tears = profile.Multipliers.Tears
+    local text = "+" .. FormatNumbers.FormatCompact(Tears) .. " Tears"
+    guiAnimation.createDynamicPopup(TearsPopUp, Transitions, text)
+    task.wait(0.5)
     newAnimation:Destroy()
     newSound:Destroy()
 end
