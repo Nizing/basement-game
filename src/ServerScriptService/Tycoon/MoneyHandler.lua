@@ -23,6 +23,10 @@ function MoneyHandler.giveById_Multiplier(player: Player, number: IntValue, Id :
 	PlayerManager:AddById(player, number * Multiplier, Id)
 end
 
+function MoneyHandler.giveById(player: Player, number: IntValue, Id : string)
+	PlayerManager:AddById(player, number, Id)
+end
+
 function MoneyHandler.removeById(player: Player, number: IntValue, Id : string)
 	PlayerManager:AddById(player, number * -1, Id)
 end
@@ -45,8 +49,20 @@ function MoneyHandler.setLevelUpLevel(player : Player, level : IntValue, index)
 	PlayerManager:SetById(player, currLevel, "Level")
 end
 
+function MoneyHandler.setStronkLevel(player : Player, level : IntValue, index)
+	PlayerManager:SetValueInTableByIndex(player, level, "StronkLevels", index)
+end
+
 function MoneyHandler.setMultiplier(player : Player , Currency : string, Income : number)
 	PlayerManager:SetValueInTableByIndex(player, Income, "Multipliers", Currency)
+end
+
+function MoneyHandler.setPassiveIncome(player : Player, Value : string, Income : number)
+	PlayerManager:SetValueInTableByIndex(player, Income, "StronkLevels", Value)
+end
+
+function MoneyHandler.getPassiveIncomeTable(player)
+	PlayerManager:GetById(player, "PassiveIncomes")
 end
 
 

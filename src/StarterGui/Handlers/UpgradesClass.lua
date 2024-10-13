@@ -20,7 +20,7 @@ Upgrades.__index = Upgrades
 -- m = level
 -- Income = math.pow(1.5 , m - 3)
 -- Cost  = math.pow(1.55 , m)
-function Upgrades.new(title, currency, level, onClick, increment, costIncrement, startBase, startCost, index, imageLabel)
+function Upgrades.new(title, currency, level, onClick, increment, costIncrement, startBase, startCost, index, imageLabel, funTitle)
 	local self = setmetatable({}, Upgrades)
     
 	self.Level = level
@@ -35,6 +35,7 @@ function Upgrades.new(title, currency, level, onClick, increment, costIncrement,
 	self.NextIncome = self._StartBase * math.pow(self._Increment, self.Level + 1)
 	self.Cost = math.floor(self._StartCost * math.pow(self._CostIncrement, self.Level))
 
+	self.FunTitle = funTitle
 	self.Title = title
 	self.Currency = currency
 	self.Image = imageLabel
@@ -45,6 +46,7 @@ function Upgrades.new(title, currency, level, onClick, increment, costIncrement,
 end
 
 local function setData(newFrame, self)
+	newFrame.Title.Text = self.FunTitle
 	newFrame.CurrentTitle.Text = self.Title .. FormatNumbers.FormatCompact(self.Income)
 	newFrame.NextTitle.Text = "Next " .. self.Title .. FormatNumbers.FormatCompact(self.NextIncome)
 	newFrame.BuyButton.Text = self.Currency .. " required: " .. FormatNumbers.FormatCompact(self.Cost)

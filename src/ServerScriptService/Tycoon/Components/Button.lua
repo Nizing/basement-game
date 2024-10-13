@@ -106,16 +106,14 @@ function Button:Press(player)
     if player == self.Tycoon.Owner and money >= cost then
 		-- If it's a door
         if self.Instance:GetAttribute("door") then
-            if level < self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return 
-            else Update_Phone:FireClient(player) end
+            if level < self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return end
             playSound(UnlockSoundId, player)
             PlayerManager:AddMoney(player, -cost)
             self.Tycoon:PublishTopic("DoorButton", id)
             self.Instance:Destroy()
         else -- if it's not a door
             
-            if self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return
-            else Update_Phone:FireClient(player) end
+            if self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return end
 
             playSound(UnlockSoundId, player)
             PlayerManager:AddMoney(player, -cost)

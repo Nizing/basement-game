@@ -17,9 +17,10 @@ local Buy_Upgrade : RemoteEvent = Remotes.Buy_Upgrade
 local Update_Multiplier : RemoteEvent = Remotes.Update_Multiplier
 local Add_Strength : RemoteEvent = Remotes.Give_Strength
 local Level_Up : RemoteEvent = Remotes.Level_Up
+local Stronk_Buy : RemoteEvent = Remotes.Stronk_Buy
 local Get_Profile : RemoteFunction = Remotes.Get_Profile
---temp
---local Level_Up : RemoteEvent = Remotes.Level_Up
+
+
 
 Cry_Remote.OnServerEvent:Connect(function(player)
 	MoneyHandler.giveById_Multiplier(player, 1 , "Tears")
@@ -59,6 +60,19 @@ Update_Multiplier.OnServerEvent:Connect(function(player : Player, Currency : str
 	MoneyHandler.setMultiplier(player, Currency, Income)
 end)
 
+Stronk_Buy.OnServerEvent:Connect(function(player: Player, Data)
+	local Cost = Data.Cost
+	local Currency = Data.Currency
+	local Level = Data.Level
+	local Index = Data.Index
+	local Value = Data.Value
+	local Income = Data.NextIncome
+
+	MoneyHandler.removeById(player, Cost, Currency)
+	MoneyHandler.setStronkLevel(player, Level, Index)
+	MoneyHandler.setPassiveIncome(player, Value, Income)
+end)
+
 local function passiveIncome(player)
 	repeat
 		task.wait(0.1)
@@ -70,6 +84,11 @@ local function passiveIncome(player)
 		local multiplier = items
 		if not multiplier then return end
 		MoneyHandler.giveMoney_Multiplier(player, 1 * multiplier)
+		for Currency, Income in pairs(MoneyHandler.getPassiveIncomeTable(player)) do
+			if Income then
+				MoneyHandler.giveById(player, Income, Currency)
+			end
+		end
 		task.wait(1)
 	end
 end

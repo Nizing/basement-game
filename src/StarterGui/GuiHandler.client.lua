@@ -119,10 +119,10 @@ End_Cutscene.Event:Connect(function()
     PhoneHandler.init()
     initColletions()
 end)
-
-Update_Phone.OnClientEvent:Connect(function()
+--wtf is this, i dont have locks anymore
+--[[Update_Phone.OnClientEvent:Connect(function()
     PhoneHandler.updateLocks()
-end)
+end)--]]
 
 LevelUpButton.Activated:Connect(function()
     

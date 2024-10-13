@@ -14,10 +14,11 @@ local Transitions = PlayerGui.Transitions
 local PhoneFrame = PhoneGui.PhoneFrame
 local VideosFrame = PhoneGui.VideosFrame
 local WatchingFrame = PhoneGui.WatchingFrame
+local StronkFrame = PhoneGui.Stronk
 --Phone
 local Apps = PhoneFrame.Apps
 local NoobTube : ImageButton = Apps.NoobTube
---local StronkWorkout : ImageButton = Apps.StronkWorkout
+local StronkWorkout : ImageButton = Apps.StronkWorkout
 --local MyDietPal : ImageButton = Apps.MyDietPal
 --local Looksmaxing : ImageButton = Apps.Looksmaxing
 
@@ -36,8 +37,10 @@ local Handlers = PlayerGui.Handlers
 local VideosData = require(Handlers.VideosData)
 local ProfileData = require(Handlers.ProfileData)
 local guiAnimation = require(Handlers.guiAnimation)
+local StronkClass = require(Handlers.StronkClass)
 local TroveModule = require(Packages.Trove)
 local FormatNumbers = require(ReplicatedStorage.FormatNumbers)
+
 
 local LocalAssets = PlayerGui.Assets
 local Assets = ReplicatedStorage.Assets
@@ -70,8 +73,8 @@ function PhoneHandler.init()
             PhoneHandler.Close()
         end
     end)
-    PhoneHandler.updateLocks()
-    PhoneHandler.connectApps()
+    NoobTube.Activated:Connect(PhoneHandler.OpenVideos)
+    StronkWorkout.Activated:Connect(PhoneHandler.OpenStronk)
     PhoneHandler.VideosInit()
     --Videos
     BackButton.Activated:Connect(PhoneHandler.Back)
@@ -85,6 +88,7 @@ function PhoneHandler.Open()
 
     VideosFrame.Visible = false
     WatchingFrame.Visible = false
+    StronkFrame.Visible = false
     
 end
 
@@ -100,52 +104,9 @@ function PhoneHandler.OpenVideos()
     ChangeGui(PhoneFrame, VideosFrame)
 end
 
-function PhoneHandler.updateLocks()
-    local profile = ProfileData.GetProfile(player)
-    local level = profile.Level
-    
-    for _, Button in pairs(Apps:GetChildren()) do
-        if Button:GetAttribute("Level") > level then
-            local lock = ReplicatedStorage.Assets.AppLock:Clone()
-            lock.Parent = Button
-            Button.Label.Visible = false
-
-        elseif Button:FindFirstChild("AppLock") then
-            Button:FindFirstChild("AppLock"):Destroy()
-            Button.Label.Visible = true
-            if Button.Name == "NoobTube" then
-                NoobTube.Activated:Connect(PhoneHandler.OpenVideos)
-            elseif Button.Name == "StronkWorkout" then
-                --Stronk activated 
-            elseif Button.Name == "Looksmaxing" then
-                --Looksmaxing
-            elseif Button.Name == "MyDietPal" then
-                --Diet
-            end
-        end
-    end
+function PhoneHandler.OpenStronk()
+    ChangeGui(PhoneFrame, StronkFrame)
 end
-
-function PhoneHandler.connectApps()
-    local profile = ProfileData.GetProfile(player)
-    local level = profile.Level
-    for _, Button in pairs(Apps:GetChildren()) do
-        if Button:GetAttribute("Level") <= level then
-            if Button.Name == "NoobTube" then
-                NoobTube.Activated:Connect(PhoneHandler.OpenVideos)
-            elseif Button.Name == "StronkWorkout" then
-                --Stronk activated 
-            elseif Button.Name == "Meditation" then
-                --Meditation
-            elseif Button.Name == "MyDietPal" then
-                --Diet
-            end
-        end
-    end
-end
-
-
-
 
 Buy_Video.OnClientEvent:Connect(function()
     PhoneHandler.VideosReset()
@@ -279,6 +240,59 @@ function PhoneHandler.onVideoClick(Data)
     end)
 
 end
+
+--Stronk
+local profile = ProfileData.GetProfile()
+local StronkData = {
+    [1] = {
+        Title = "TurboCry" ,
+        Currency = "Money",
+        Value = "Tears",
+        Level = profile.StronkLevels[1],
+        Image = "rbxassetid://19003295395",
+        BaseCost = 1000,
+        BaseIncome = 10,
+        UnlockLevel = 1,
+        
+    },
+    [2] = {
+        Title = "Stereoids",
+        Currency = "Money",
+        Value = "Physique",
+        Level = profile.StronkLevels[2],
+        Image = "rbxassetid://18981874946",
+        BaseCost = 10000,
+        BaseIncome = 20,
+        UnlockLevel = 5,
+    },
+    [3] = {
+        Title = "Bonesmashing",
+        Currency = "Money",
+        Value = "Looks",
+        Level = profile.StronkLevels[3],
+        Image = "rbxassetid://70774566978748",
+        BaseCost = 100000,
+        BaseIncome = 40,
+        UnlockLevel = 10,
+    },
+    [4] = {
+        Title = "Cheat day",
+        Currency = "Money",
+        Value = "Diet",
+        Level = profile.StronkLevels[4],
+        Image = "rbxassetid://109631826263073",
+        BaseCost = 1000000,
+        BaseIncome = 50,
+        UnlockLevel = 25,
+    }
+}
+
+for _, page in ipairs(StronkData) do
+    local newStronk = StronkClass.new(page.Title, page.Currency, page.Value, page.Level, page.Image, page.BaseCost, page.BaseIncome, page.UnlockLevel)
+    newStronk:Init()
+end
+
+
 
 
 
