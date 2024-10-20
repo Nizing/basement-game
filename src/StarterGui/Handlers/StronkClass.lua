@@ -16,13 +16,14 @@ local StronkClass = {}
 
 StronkClass.__index = StronkClass
 
-function StronkClass.new(title : string, currency : string, value : string, level : number , image : string, baseCost: number, baseIncome: number, unlockLevel)
+function StronkClass.new(title : string, currency : string, value : string, level : number , image : string, baseCost: number, baseIncome: number, unlockLevel, index : number)
     local self = setmetatable({}, StronkClass)
     self.Title = title
     self.Currency = currency
     self.Value = value
     self.Level = level
     self.Image = image
+    self.Index = index
 
     self._BaseCost = baseCost
     self._BaseIncome = baseIncome

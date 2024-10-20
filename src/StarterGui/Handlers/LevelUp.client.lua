@@ -1,3 +1,4 @@
+local Players = game:GetService("Players")
 local LevelUpClass = require(script.Parent.LevelUpClass)
 local ProfileModule = require(script.Parent.ProfileData)
 
@@ -34,6 +35,11 @@ local Data = {
 	}
 }
 
+for _, v in pairs(Players.LocalPlayer.PlayerGui.LevelUp.Frame.Container.Folder:GetChildren()) do
+	if v:IsA("Frame") then
+		v:Destroy()
+	end
+end
 
 for i, page in pairs(Data) do
     local newLevelUp = LevelUpClass.new(page.Title, page.Cost,page.Level ,page.Image , page.Currency, i)

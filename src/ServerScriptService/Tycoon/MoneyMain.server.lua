@@ -16,9 +16,13 @@ local Buy_Video : RemoteEvent = Remotes.Buy_Video
 local Buy_Upgrade : RemoteEvent = Remotes.Buy_Upgrade
 local Update_Multiplier : RemoteEvent = Remotes.Update_Multiplier
 local Add_Strength : RemoteEvent = Remotes.Give_Strength
+local Add_Looks : RemoteEvent = Remotes.Add_Looks
+local Add_Diet : RemoteEvent = Remotes.Add_Diet
 local Level_Up : RemoteEvent = Remotes.Level_Up
 local Stronk_Buy : RemoteEvent = Remotes.Stronk_Buy
+local GamePass_Bought : RemoteEvent = Remotes.GamePass_Bought
 local Get_Profile : RemoteFunction = Remotes.Get_Profile
+
 
 
 
@@ -28,6 +32,14 @@ end)
 
 Add_Strength.OnServerEvent:Connect(function(player)
 	MoneyHandler.giveById_Multiplier(player, 1, "Physique")
+end)
+
+Add_Looks.OnServerEvent:Connect(function(player)
+	MoneyHandler.giveById_Multiplier(player, 1 , "Looks")
+end)
+
+Add_Diet.OnServerEvent:Connect(function(player)
+	MoneyHandler.giveById_Multiplier(player, 1,"Diet")
 end)
 
 Get_Profile.OnServerInvoke = function(player)
@@ -60,6 +72,10 @@ Update_Multiplier.OnServerEvent:Connect(function(player : Player, Currency : str
 	MoneyHandler.setMultiplier(player, Currency, Income)
 end)
 
+GamePass_Bought.OnServerEvent:Connect(function(player)
+	PlayerManager:RegisterGamepasses(player)
+end)
+
 Stronk_Buy.OnServerEvent:Connect(function(player: Player, Data)
 	local Cost = Data.Cost
 	local Currency = Data.Currency
@@ -84,7 +100,7 @@ local function passiveIncome(player)
 		local multiplier = items
 		if not multiplier then return end
 		MoneyHandler.giveMoney_Multiplier(player, 1 * multiplier)
-		for Currency, Income in pairs(MoneyHandler.getPassiveIncomeTable(player)) do
+		for Currency, Income in pairs(PlayerManager:GetById(player, "PassiveIncomes")) do
 			if Income then
 				MoneyHandler.giveById(player, Income, Currency)
 			end

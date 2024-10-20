@@ -31,6 +31,8 @@ Players.PlayerAdded:Connect(function(player)
 	CutsceneModule.startCutScene(player , spawn)
 	--Cutscene ended
 	Play_Cutscene.OnServerEvent:Once(function(c_player)
-		CutsceneModule.endCutScene(c_player, tycoon)
+		if c_player == player then
+			CutsceneModule.endCutScene(c_player, tycoon)
+		end
 	end)
 end)

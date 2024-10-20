@@ -16,6 +16,7 @@ local function stopAllAnim(humanoid)
 end
 
 function CustomAnims.Init(humanoid: Humanoid, bench)
+	
 	local runTrack = humanoid.Animator:LoadAnimation(RunAnim)
 	local IdleTrack = humanoid.Animator:LoadAnimation(IdleAnim)
 	local sitTrack = humanoid.Animator:LoadAnimation(SitAnim)
@@ -33,19 +34,10 @@ function CustomAnims.Init(humanoid: Humanoid, bench)
 		end
 	end)
 	
-	local done = false
-
-	task.spawn(function()
-		task.wait(10)
-		done = true
-	end)
+	
 
 	seat1.Touched:Connect(function(hit)
-		if done == true then
-			return
-		end
-
-		if hit.Parent:FindFirstChild("Humanoid") then
+		if hit.Parent:FindFirstChild("Humanoid") and hit.Parent.Name == "Crush" then
 			humanoid.Parent:SetPrimaryPartCFrame(seat1.CFrame * CFrame.new(0, 1.35, 0))
 			stopAllAnim(humanoid)
 			sitTrack:Play()
@@ -53,8 +45,6 @@ function CustomAnims.Init(humanoid: Humanoid, bench)
 			humanoid.Sit = true
 			task.wait(0.1)
 			humanoid.Parent.HumanoidRootPart.Anchored = true
-			
-			done = true
 		end
 	end)
 end

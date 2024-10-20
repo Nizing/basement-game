@@ -4,8 +4,8 @@ local ServerScriptService = game:GetService("ServerScriptService")
 local PlayerManager = require(ServerScriptService.Libraries.PlayerManager)
 
 local products = {
-    [1] = function(player)
-        PlayerManager:AddMoney(player, 123)
+    [2317860444] = function(player)
+        print("DESTROY EVERYTHING")
         return true
     end
 }

@@ -287,8 +287,8 @@ local StronkData = {
     }
 }
 
-for _, page in ipairs(StronkData) do
-    local newStronk = StronkClass.new(page.Title, page.Currency, page.Value, page.Level, page.Image, page.BaseCost, page.BaseIncome, page.UnlockLevel)
+for i, page in ipairs(StronkData) do
+    local newStronk = StronkClass.new(page.Title, page.Currency, page.Value, page.Level, page.Image, page.BaseCost, page.BaseIncome, page.UnlockLevel, i)
     newStronk:Init()
 end
 

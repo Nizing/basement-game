@@ -9,6 +9,7 @@ local DataHandler = require(ServerScripService.DataHandler)
 local function onPlayerAdded(player)
 	DataHandler.LoadData(player)
 	PlayerManager.spawnLeaderstats(player)
+	PlayerManager:RegisterGamepasses(player)
 end
 
 local function onPlayerRemoving(player)
@@ -34,7 +35,6 @@ Players.PlayerAdded:Connect(function(player)
 				task.wait(3)
 				player:LoadCharacter()
 				addPhone(player)
-				
 			end)
 		end
 	end)

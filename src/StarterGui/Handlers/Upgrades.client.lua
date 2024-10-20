@@ -71,9 +71,29 @@ local Data = {
 		onClick = function(self)
 			Update_Multiplier:FireServer(self.Currency, self.Income)
 		end,
-		ImageLabel = "rbxassetid://18981820239"
+		ImageLabel = "rbxassetid://70774566978748"
+	},
+	[5] = {
+		FunTitle = "DietMaxing",
+		Title = "Healthy Diet ",
+		Currency = "Diet",
+		Level = profile.Upgrades[5],
+		Increment = 1.39,
+		CostIncrement = 1.42,
+		StartingBase = 1.6,
+		StartingCost = 2,
+		onClick = function(self)
+			Update_Multiplier:FireServer(self.Currency, self.Income)
+		end,
+		ImageLabel = "rbxassetid://109631826263073"
 	}
 }
+
+for _, v in pairs(UpgradesGui.Frame.Container:GetChildren()) do
+	if v:IsA("Frame") then
+		v:Destroy()
+	end
+end
 
 for i, Data in pairs(Data) do
 	local newUpgrade = UpgradesClass.new(Data.Title, Data.Currency, Data.Level, Data.onClick, Data.Increment, Data.CostIncrement,Data.StartingBase, Data.StartingCost, i, Data.ImageLabel, Data.FunTitle)
@@ -82,6 +102,7 @@ end
 
 local originalPosition = UpgradesGui.Frame.Position
 local originalSize = UpgradesGui.Frame.Size
+
 Open_Upgrades.OnClientEvent:Connect(function(State : string, SeatInstance)
 	if UpgradesGui.Enabled == true then return end
 	UpgradesGui.Frame.Position = originalPosition

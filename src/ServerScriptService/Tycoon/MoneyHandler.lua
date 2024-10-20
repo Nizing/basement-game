@@ -11,7 +11,7 @@ function MoneyHandler.giveMoney(player: Player, number: IntValue)
 end
 --important
 function MoneyHandler.giveMoney_Multiplier(player: Player, number: IntValue)
-	PlayerManager:AddMoney(player, number * PlayerManager:GetMultiplier(player , "Money"))
+	PlayerManager:AddMoney(player, number * PlayerManager:GetMultiplier(player , "Money") * PlayerManager:GetById(player, "globalMultiplier"))
 end
 
 function MoneyHandler.removeMoney(player: Player, number: IntValue)
@@ -19,7 +19,7 @@ function MoneyHandler.removeMoney(player: Player, number: IntValue)
 end
 
 function MoneyHandler.giveById_Multiplier(player: Player, number: IntValue, Id : string)
-	local Multiplier = PlayerManager:GetMultiplier(player, Id)
+	local Multiplier = PlayerManager:GetMultiplier(player, Id) * PlayerManager:GetById(player, "globalMultiplier")
 	PlayerManager:AddById(player, number * Multiplier, Id)
 end
 
@@ -58,12 +58,9 @@ function MoneyHandler.setMultiplier(player : Player , Currency : string, Income 
 end
 
 function MoneyHandler.setPassiveIncome(player : Player, Value : string, Income : number)
-	PlayerManager:SetValueInTableByIndex(player, Income, "StronkLevels", Value)
+	PlayerManager:SetValueInTableByIndex(player, Income, "PassiveIncomes", Value)
 end
 
-function MoneyHandler.getPassiveIncomeTable(player)
-	PlayerManager:GetById(player, "PassiveIncomes")
-end
 
 
 

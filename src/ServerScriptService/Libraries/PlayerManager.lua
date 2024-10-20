@@ -1,14 +1,26 @@
+local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
 
 local Remotes = ReplicatedStorage.Remotes
 local Update_Client = Remotes.Update_Client
 
-
-
 local PlayerManager = {}
 
 PlayerManager.Profiles = {}
+
+local gamepasses = {
+	
+	[948423417] = function(player)
+        PlayerManager:SetById(player, 2, "globalMultiplier")
+    end,
+
+	[948490372] = function(player)
+		PlayerManager:SetById(player, true, "Sprinting")
+	end
+
+}
 
 function PlayerManager.spawnLeaderstats(player: Player)
 	local profile = PlayerManager.Profiles[player]
@@ -45,6 +57,14 @@ end
 
 function PlayerManager:Loaded(player: Player)
 	return self.Profiles[player] 
+end
+
+function PlayerManager:RegisterGamepasses(player)
+	for id, passfunction in pairs(gamepasses) do
+		if MarketplaceService:UserOwnsGamePassAsync(player.UserId, id) then
+			passfunction(player)
+		end
+	end
 end
 
 function PlayerManager:GetData(player :  Player)
@@ -168,6 +188,8 @@ function PlayerManager:GetMultiplier(player : Player, Index : string)
 	if not profile then return end
 	return profile.Data.Multipliers[Index]
 end
+
+
 
 
 

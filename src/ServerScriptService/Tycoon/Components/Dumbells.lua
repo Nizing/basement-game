@@ -9,7 +9,7 @@ function Dumbells.new(tycoon, instance)
     local self = setmetatable({}, Dumbells)
     self.Tycoon = tycoon
     self.Instance = instance
-    self.ProximityPart = instance.ProximityPart
+    
 
     self._initClient = ReplicatedStorage.Remotes.initDumbell
     self._StrengthGainEvent = ReplicatedStorage.Remotes.Give_Strength

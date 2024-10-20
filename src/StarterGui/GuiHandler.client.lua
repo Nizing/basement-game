@@ -9,9 +9,12 @@ local StarterGui = script.Parent
 
 local MainGui = StarterGui.MainGui
 local LevelUpGui = StarterGui.LevelUp
+local ShopGui = StarterGui.ShopGui
 
 local SettingsGui = StarterGui.SettingsGui
 local LevelUpFrame = MainGui.LevelUpGui
+local ShopFrame = MainGui.ShopGui
+
 
 local CryFrame = MainGui.CryFrame
 local LevelFrame = MainGui.LevelFrame
@@ -102,15 +105,15 @@ local function initColletions()
     end
 
     --monetization
-    for _, Button in pairs(CollectionService:GetTagged("GamepassButton")) do
-        gamepassHandler.configGamepass(Button)
+    for _, Button : ImageButton in pairs(CollectionService:GetTagged("GamepassButton")) do
+      gamepassHandler.configGamepass(Button)
     end
     CollectionService:GetInstanceAddedSignal("GamepassButton"):Connect(gamepassHandler.configGamepass)
 
     for _, Button in pairs(CollectionService:GetTagged("DevProductButton")) do
         gamepassHandler.configDevProduct(Button)
     end
-    CollectionService:GetInstanceAddedSignal("GamepassButton"):Connect(gamepassHandler.configDevProduct)
+    CollectionService:GetInstanceAddedSignal("DevProductButton"):Connect(gamepassHandler.configDevProduct)
 end
 
 --Phone
@@ -134,6 +137,16 @@ LevelUpButton.Activated:Connect(function()
         LevelUpGui.Enabled = false
     end
     
+end)
+
+ShopFrame.ImageButton.Activated:Connect(function()
+    if ShopGui.Enabled == false then
+        ShopGui.Enabled = true
+        guiAnimation.animateGUI(ShopGui.Frame)
+    else
+        guiAnimation.animateGUIClose(ShopGui.Frame)
+        ShopGui.Enabled = false
+    end
 end)
 
 

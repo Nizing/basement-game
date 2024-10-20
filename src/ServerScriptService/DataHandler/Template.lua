@@ -1,16 +1,19 @@
 
 
 local Template = {
-	Tears = 10000,
-	Physique = 0,
-	Diet = 0,
-	Looks = 0,
-	Money = 100000,
-	Level = 0,
+	Tears = 100000,
+	Physique = 100000,
+	Diet = 100000,
+	Looks = 10000,
+	Money = 100000000,
+	Level = 100,
 	ItemCount = 0,
 	UnlockIds = {},
 	DoorIds = {},
 	VideoIds = {1},
+
+	globalMultiplier = 1,
+	Sprinting = false
 }
 
 Template.Upgrades = {
@@ -18,6 +21,7 @@ Template.Upgrades = {
 	[2] = 0,
 	[3] = 0,
 	[4] = 0,
+	[5] = 0,
 }
 
 Template.ClientLevels = {
@@ -48,6 +52,9 @@ Template.Multipliers = {
 	["Looks"] = 1,
 	["Diet"] = 1,
 }
+
+
+
 
 
 return Template

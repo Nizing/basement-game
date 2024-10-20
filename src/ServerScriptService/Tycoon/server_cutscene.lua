@@ -17,9 +17,26 @@ local function findBench(Index)
 	end
 end
 
+local function addPhone(player)
+	local new_phone = ServerStorage.Phone:Clone()
+	new_phone.Parent = player.Backpack
+end
+
+local function loadCharacter(player)
+	player:LoadCharacter()
+	local humanoid = player.Character:FindFirstChild("Humanoid")
+		if humanoid then
+			humanoid.Died:Connect(function()
+				task.wait(3)
+				player:LoadCharacter()
+				addPhone(player)
+			end)
+		end
+end
+
 function server_cutscene.startCutScene(player, spawn)
 	local bench = findBench(spawn:GetAttribute("Index"))
-	player:LoadCharacter()
+	loadCharacter(player)
 	player.Character:PivotTo(bench.Seat.CFrame)
 	Play_Cutscene:FireClient(player, bench)
 	task.wait(1)
