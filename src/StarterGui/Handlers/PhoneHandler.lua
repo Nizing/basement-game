@@ -116,7 +116,7 @@ end)
 
 local function createUnlockFrame(Data)
     local newUnlockFrame = ReplicatedStorage.Assets.UnlockFrame:Clone()
-    newUnlockFrame.Label.Text = "Unlock for: ".. Data.Cost.. "$"
+    newUnlockFrame.Label.Text = "Unlock for: ".. FormatNumbers.FormatCompact(Data.Cost).. "$"
 
     newUnlockFrame.BuyButton.Activated:Connect(function()
         local profile = ProfileData.GetProfile()
@@ -143,7 +143,7 @@ function PhoneHandler.VideosInit()
 		newFrame.Parent = VideosScrollingFrame
 
         newFrame.Title.Text = Data.Title
-		newFrame.Input.Text = Data.input.."😭 Tears = "..Data.output.." Money 💸"  
+		newFrame.Input.Text = FormatNumbers.FormatCompact(Data.input).."😭 Tears = ".. FormatNumbers.FormatCompact(Data.output * profile.globalMultiplier * profile.RebirthMultiplier).." Money 💸"  
         
         newFrame.Channel.Text = Data.Channel
         newFrame.Views.Text = Data.Views .. " • " .. Data.Date
@@ -220,11 +220,12 @@ function PhoneHandler.onVideoClick(Data)
         pauseVideo(PlayingLabel, PauseLabel)
         --Give the player the moneyyyy
         if perc >= 100 then
+            local profile = ProfileData.GetProfile()
             ChangeGui(WatchingFrame, VideosFrame)
             Convert_Tears:FireServer(Data.input, Data.output)
             WatchingFrame.SliderFrame.Slider.Size = UDim2.fromScale(0, 1)
 
-            local text = "+ ".. FormatNumbers.FormatCompact(Data.output).. " Money"
+            local text = "+ ".. FormatNumbers.FormatCompact(Data.output * profile.globalMultiplier * profile.RebirthMultiplier).. " Money"
             task.spawn(function()
                 guiAnimation.createDynamicPopup(MoneyPopUp, Transitions, text)
             end)
@@ -286,9 +287,10 @@ local StronkData = {
         UnlockLevel = 25,
     }
 }
-
+local profile = ProfileData.GetProfile()
 for i, page in ipairs(StronkData) do
-    local newStronk = StronkClass.new(page.Title, page.Currency, page.Value, page.Level, page.Image, page.BaseCost, page.BaseIncome, page.UnlockLevel, i)
+    local Income = page.BaseIncome * profile.globalMultiplier * profile.RebirthMultiplier
+    local newStronk = StronkClass.new(page.Title, page.Currency, page.Value, page.Level, page.Image, page.BaseCost, Income, page.UnlockLevel, i)
     newStronk:Init()
 end
 

@@ -34,13 +34,11 @@ local function playAnimation(player, animationId)
     end 
 end
 
-
-
 function Dumbells:CreatePrompt()
     local newPrompt = Instance.new("ProximityPrompt")
-    newPrompt.HoldDuration = 2
+    newPrompt.HoldDuration = 1
     newPrompt.ObjectText = "Pick up Dumbell"
-    newPrompt.Parent = self.ProximityPart
+    newPrompt.Parent = self.Instance.ProximityPart
     return newPrompt
 end
 local IdleAnimation = "rbxassetid://74501629614531"
@@ -51,7 +49,7 @@ function Dumbells:Init()
     self.Prompt.Triggered:Connect(function(playerWhoTriggered)
         if playerWhoTriggered.Name == self.Tycoon.Owner.Name then
             self.Dumbell = self:Press(playerWhoTriggered)
-
+            
             self.Dumbell.Equipped:Connect(function()
                 table.insert(self._AnimationTrash, playAnimation(playerWhoTriggered, IdleAnimation))
             end)
@@ -71,7 +69,6 @@ function Dumbells:Init()
 end
 
 function Dumbells:Press(player)
-    if player.Backpack:FindFirstChild("Dumbell") then return end
     local newDumbell = Tool:Clone()
     newDumbell.Name = "Dumbell"
     newDumbell.Parent = player.Backpack

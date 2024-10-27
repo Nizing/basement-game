@@ -33,7 +33,7 @@ function onButtonClicked(clonedButton)
 	if clickedButtons == numButtons then
 		Add_Looks:FireServer()
         local profile = profileModule.GetProfile()
-        local text = "+ " .. FormatNumbers.FormatCompact(profile.Multipliers.Looks) .. " Looks"
+        local text = "+ " .. FormatNumbers.FormatCompact(profile.Multipliers.Looks * profile.globalMultiplier * profile.RebirthMultiplier) .. " Looks"
         guiAnimation.createDynamicPopup(LooksPopUp, Transitions, text)
 		return "Finished"
 	end
@@ -63,7 +63,7 @@ local function playRound()
 end
 
 LooksmaxEnter.OnClientEvent:Connect(function()
-    print("??")
+    
     MirrorGui.Enabled = true
     guiAnimation.popupFrame(MirrorFrame, 1)
     player.Character.Humanoid.WalkSpeed = 0

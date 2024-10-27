@@ -105,7 +105,7 @@ FoodButton.Activated:Connect(function()
         Errors.Text = currErrors .. "/" .. MaxErrors .. " Errors"
         Add_Diet:FireServer()
         local profile = profileModule.GetProfile()
-        local text = "+ ".. FormatNumbers.FormatCompact(profile.Multipliers.Diet) .. " Diet"
+        local text = "+ ".. FormatNumbers.FormatCompact(profile.Multipliers.Diet * profile.globalMultiplier * profile.RebirthMultiplier) .. " Diet"
         guiAnimation.createDynamicPopup(DietPopUp, TransitionsGui, text)
     else
         print("STILL RAW")

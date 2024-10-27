@@ -33,7 +33,7 @@ function Animations.CryAnimation(player : Player)
     newSound:Play()
 
     local profile = profileModule.GetProfile()
-    local Tears = profile.Multipliers.Tears
+    local Tears = profile.Multipliers.Tears * profile.globalMultiplier * profile.RebirthMultiplier
     local text = "+" .. FormatNumbers.FormatCompact(Tears) .. " Tears"
     guiAnimation.createDynamicPopup(TearsPopUp, Transitions, text)
     task.wait(0.5)

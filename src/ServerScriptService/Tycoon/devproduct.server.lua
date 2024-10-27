@@ -7,7 +7,19 @@ local products = {
     [2317860444] = function(player)
         print("DESTROY EVERYTHING")
         return true
-    end
+    end,
+    [2463459939] = function(player)
+        PlayerManager:AddMoney(player, 1000)
+        return true
+    end,
+    [2463595781] = function(player)
+        PlayerManager:AddMoney(player, 10000)
+        return true
+    end,
+    [2463624333] = function(player)
+        PlayerManager:AddMoney(player, 1000000)
+        return true
+    end,
 }
 
 MarketplaceService.ProcessReceipt = function(info)

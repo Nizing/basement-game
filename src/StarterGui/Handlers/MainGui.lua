@@ -68,7 +68,7 @@ function MainGui.Labels_init(LevelLabel : TextLabel, MoneyLabel : TextLabel, Tea
         --Update the first two
         LevelLabel.Text = "Level: ".. Format.FormatCompact(Data.Level)
         MoneyLabel.Text = "Money: ".. Format.FormatCompact(Data.Money)
-        MoneyLabel.Parent.MoneyPerSecondFrame.Income.Text = Format.FormatCompact(Data.Multipliers["Money"] * Data.ItemCount).. " / S"
+        MoneyLabel.Parent.MoneyPerSecondFrame.Income.Text = Format.FormatCompact(Data.Multipliers["Money"] * Data.ItemCount * Data.globalMultiplier * Data.RebirthMultiplier).. " / S"
         --Check which gui is displaying, then if it matches with the data update, if not keep the same.
         local TearsFrame = TearsLabel.Parent
         local currentIndex = TearsFrame:GetAttribute("Index")

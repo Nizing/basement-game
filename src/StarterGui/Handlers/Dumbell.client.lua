@@ -25,7 +25,7 @@ initClient.OnClientEvent:Connect(function(Instance : Tool)
     local deb = false
     Instance.Activated:Connect(function()
         local profile = ProfileModule.GetProfile()
-        local Physique = profile.Multipliers.Physique
+        local Physique = profile.Multipliers.Physique * profile.globalMultiplier * profile.RebirthMultiplier
         if deb == false then
             deb = true
             addStrength:FireServer()

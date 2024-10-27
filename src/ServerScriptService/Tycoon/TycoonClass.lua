@@ -1,4 +1,6 @@
 local CollectionService = game:GetService("CollectionService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
 local template = game:GetService("ServerStorage").Template
 local componentFolder = script.Parent.Components
@@ -57,6 +59,9 @@ function Tycoon:Init()
 	self:LockAll()
 	removeTemplate(self._index)
 	--self:LoadUnlocks()
+	self:WaitForExit()
+	self:WaitForRebirth()
+	
 end
 
 function Tycoon:SetSpawn(player)
@@ -141,8 +146,37 @@ function Tycoon:SubscribeTopic(topicName, callback)
 	return connection
 end
 
+function Tycoon:WaitForExit()
+	Players.PlayerRemoving:Connect(function(player)
+		if self.Owner == player then
+			self:Destroy()
+		end
+	end)
+end
+
+
+local Rebirth_Remote : RemoteEvent = ReplicatedStorage.Remotes.Rebirth_Remote
+function Tycoon:WaitForRebirth()
+	Rebirth_Remote.OnServerEvent:Connect(function(player)
+		if player.Name == self.Owner.Name then
+			local spawnPoint = self._spawn
+			local owner = self.Owner
+			PlayerManager:OnRebirth(owner)
+			self:Destroy()
+
+			local tyc = Tycoon.new(owner, spawnPoint)
+			tyc:Init()
+			local RespawnLocation = tyc:SetSpawn(owner)
+			owner.Character:PivotTo(RespawnLocation.CFrame + Vector3.new(0, 3 , 0))
+			PlayerManager:AddById(owner, 0.5, "RebirthMultiplier")
+		end
+	end)
+end
+
 function Tycoon:Destroy()
 	addTemplateBack(self._index)
+	self._spawn:SetAttribute("Occupied", false)
+	self._topicEvent:Destroy()
 	self.Model:Destroy()
 end
 

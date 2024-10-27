@@ -7,11 +7,13 @@ local PlayerManager = require(Libraries.PlayerManager)
 local MoneyHandler = {}
 
 function MoneyHandler.giveMoney(player: Player, number: IntValue)
-	PlayerManager:AddMoney(player, number)
+	local Multiplier = PlayerManager:GetById(player, "globalMultiplier") * PlayerManager:GetById(player, "RebirthMultiplier") 
+	PlayerManager:AddMoney(player, number * Multiplier)
 end
 --important
 function MoneyHandler.giveMoney_Multiplier(player: Player, number: IntValue)
-	PlayerManager:AddMoney(player, number * PlayerManager:GetMultiplier(player , "Money") * PlayerManager:GetById(player, "globalMultiplier"))
+	local Multiplier = PlayerManager:GetMultiplier(player, "Money") * PlayerManager:GetById(player, "globalMultiplier") * PlayerManager:GetById(player, "RebirthMultiplier")
+	PlayerManager:AddMoney(player, number * Multiplier)
 end
 
 function MoneyHandler.removeMoney(player: Player, number: IntValue)
@@ -19,12 +21,13 @@ function MoneyHandler.removeMoney(player: Player, number: IntValue)
 end
 
 function MoneyHandler.giveById_Multiplier(player: Player, number: IntValue, Id : string)
-	local Multiplier = PlayerManager:GetMultiplier(player, Id) * PlayerManager:GetById(player, "globalMultiplier")
+	local Multiplier = PlayerManager:GetMultiplier(player, Id) * PlayerManager:GetById(player, "globalMultiplier") * PlayerManager:GetById(player, "RebirthMultiplier")
 	PlayerManager:AddById(player, number * Multiplier, Id)
 end
 
 function MoneyHandler.giveById(player: Player, number: IntValue, Id : string)
-	PlayerManager:AddById(player, number, Id)
+	local Multiplier = PlayerManager:GetById(player, "globalMultiplier") * PlayerManager:GetById(player, "RebirthMultiplier") 
+	PlayerManager:AddById(player, number * Multiplier, Id) 
 end
 
 function MoneyHandler.removeById(player: Player, number: IntValue, Id : string)

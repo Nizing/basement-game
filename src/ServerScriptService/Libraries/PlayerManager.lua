@@ -189,10 +189,47 @@ function PlayerManager:GetMultiplier(player : Player, Index : string)
 	return profile.Data.Multipliers[Index]
 end
 
+function PlayerManager:OnRebirth(player)
+	local profile = self.Profiles[player]
+	if not profile then return end
+	local Data = profile.Data
+
+	Data.Money = 0
+	Data.Tears = 0
+	Data.Physique = 0
+	Data.Looks = 0
+	Data.Diet = 0
+	Data.Level = 0
+	Data.ItemCount = 0
+
+	table.clear(Data.UnlockIds)
+	table.clear(Data.DoorIds)
+	table.clear(Data.VideoIds)
+	table.insert(Data.VideoIds, 1)
+
+	
+	for i, _ in pairs(Data.Upgrades) do
+		Data.Upgrades[i] = 0
+	end
+
+	for i, _ in pairs(Data.ClientLevels) do
+		Data.ClientLevels[i] = 0
+	end
+
+	for i, _ in pairs(Data.StronkLevels) do
+		Data.StronkLevels[i] = 0
+	end
 
 
 
+	table.clear(Data.PassiveIncomes)
 
+	Data.Multipliers.Money = 0.6
+	Data.Multipliers.Tears = 1
+	Data.Multipliers.Physique = 1
+	Data.Multipliers.Looks = 1
+	Data.Multipliers.Diet = 1
 
+end
 
 return PlayerManager

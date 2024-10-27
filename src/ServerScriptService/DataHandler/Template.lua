@@ -1,16 +1,17 @@
 
 
 local Template = {
-	Tears = 100000,
-	Physique = 100000,
-	Diet = 100000,
-	Looks = 10000,
-	Money = 100000000,
-	Level = 100,
+	Tears = 0,
+	Physique = 0,
+	Diet = 0,
+	Looks = 0,
+	Money = 0,
+	Level = 0,
 	ItemCount = 0,
 	UnlockIds = {},
 	DoorIds = {},
 	VideoIds = {1},
+	RebirthMultiplier = 1,
 
 	globalMultiplier = 1,
 	Sprinting = false
