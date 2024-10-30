@@ -2,6 +2,7 @@ local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
+local ServerStorage = game:GetService("ServerStorage")
 
 local PlayerManager = require(ServerScriptService.Libraries.PlayerManager)
 
@@ -11,7 +12,13 @@ local products = {
 			task.wait(1)
 			ReplicatedStorage.Remotes.Nuke_Countdown:FireAllClients(i)
         end
-        
+        local newNuke = ServerStorage.Nuke:Clone()
+        newNuke.Parent = game.Workspace
+        task.wait(3)
+        newNuke:Destroy()
+        for _, player in pairs(Players:GetPlayers()) do
+            player.Character.Humanoid.Health = 0
+        end
 		for _, House in pairs(game.Workspace:GetChildren()) do
 			if House.Name == "Template" then
 				for _, HousePart in pairs(House:GetDescendants()) do
