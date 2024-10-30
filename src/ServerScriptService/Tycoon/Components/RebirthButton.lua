@@ -1,4 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local ServerScriptService = game:GetService("ServerScriptService")
+local PlayerManager = require(ServerScriptService.Libraries.PlayerManager)
 local FormatNumbers = require(ReplicatedStorage.FormatNumbers)
 
 local RebirthButton = {}
@@ -21,15 +23,24 @@ function RebirthButton:Init()
         deb = true
         local player = game.Players:GetPlayerFromCharacter(hit.Parent)
         if player and player.Name == self.Tycoon.Owner.Name then
-            self:Press()
+            self:Press(player)
         end
         task.wait(0.5)
         deb = false
     end)
 end
-
-function RebirthButton:Press()
-    self._RebirthPopUp:FireClient(self.Tycoon.Owner, self.Instance.CFramePart)
+local Not_Enough_Money = ReplicatedStorage.Remotes.Not_Enough_Money
+local Level_Too_Low = ReplicatedStorage.Remotes.Level_Too_Low
+function RebirthButton:Press(player)
+    
+    if PlayerManager:GetMoney(player) < self.Instance:GetAttribute("Cost") then
+        Not_Enough_Money:FireClient(player)
+	end
+    local level = PlayerManager:GetLevel(player)
+    if PlayerManager:GetMoney(player) >= self.Instance:GetAttribute("Cost") then
+        if self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return end
+        self._RebirthPopUp:FireClient(player, self.Instance.CFramePart)
+    end
 end
 
 

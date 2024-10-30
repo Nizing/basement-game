@@ -1,3 +1,4 @@
+
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Remotes = ReplicatedStorage.Remotes
@@ -14,6 +15,10 @@ local PlayerGui = player.PlayerGui
 local UpgradesGui = PlayerGui.UpgradesGui
 
 local Update_Multiplier : RemoteEvent = ReplicatedStorage.Remotes.Update_Multiplier
+
+while ProfileModule.Loaded() == false do
+	task.wait(2)
+end
 local profile = ProfileModule.GetProfile()
 local Data = {
 	[1] = {

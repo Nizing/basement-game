@@ -56,7 +56,8 @@ local function updateClient(player: Player, Data)
 end
 
 function PlayerManager:Loaded(player: Player)
-	return self.Profiles[player] 
+	if self.Profiles[player] then return true end
+	return false
 end
 
 function PlayerManager:RegisterGamepasses(player)
@@ -157,8 +158,8 @@ end
 function PlayerManager:AddDoorId(player: Player, unlockId : string)
 	local profile = self.Profiles[player]
 	if not profile then return end
-	if not table.find(profile.Data.UnlockIds,unlockId) then
-		table.insert(profile.Data.UnlockIds, unlockId)
+	if not table.find(profile.Data.DoorIds, unlockId) then
+		table.insert(profile.Data.DoorIds, unlockId)
 	end
 	
 	return profile

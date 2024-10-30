@@ -54,11 +54,12 @@ function Tycoon.new(player : Player, spawnpoint: Instance, index : number)
 end
 
 function Tycoon:Init()
+	
 	self.Model = newModel(template, self._spawn.CFrame, self.Owner)
 	self._spawn:SetAttribute("Occupied", true)
 	self:LockAll()
 	removeTemplate(self._index)
-	--self:LoadUnlocks()
+	self:LoadUnlocks()
 	self:WaitForExit()
 	self:WaitForRebirth()
 	
@@ -73,12 +74,22 @@ function Tycoon:SetSpawn(player)
 end
 
 function Tycoon:LoadUnlocks()
-	for _, id in ipairs(PlayerManager:GetUnlockIds(self.Owner)) do
-		self:PublishTopic("Button", id)
-	end
-	for _, id in ipairs(PlayerManager:GetDoorIds(self.Owner)) do
-		self:PublishTopic("DoorButton", id)
-	end
+	task.spawn(function()
+		while not PlayerManager:Loaded(self.Owner) do
+			task.wait(1)
+		end
+
+		for _, id in ipairs(PlayerManager:GetUnlockIds(self.Owner)) do
+			task.wait(0.01)
+			self:PublishTopic("Button", id)
+		end
+		
+		for _, id in ipairs(PlayerManager:GetDoorIds(self.Owner)) do
+			self:PublishTopic("DoorButton", id)
+		end
+		
+	end)
+	
 
 end
 

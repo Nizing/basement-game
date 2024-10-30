@@ -6,7 +6,7 @@ local ProfileService = require(ServerScriptService.Libraries.ProfileService)
 local Template = require(script.Template)
 local Manager = require(ServerScriptService.Libraries.PlayerManager)
 
-local ProfileStore = ProfileService.GetProfileStore("Production", Template)
+local ProfileStore = ProfileService.GetProfileStore("Running_v2", Template)
 
 local DataHandler = {}
 
@@ -29,7 +29,7 @@ function DataHandler.LoadData(player: Player)
 	else
 		profile:Release()
 	end
-
+	print(profile)
 end
 
 function DataHandler.Release(player: Player)

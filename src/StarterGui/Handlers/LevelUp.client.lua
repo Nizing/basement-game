@@ -1,7 +1,11 @@
+
 local Players = game:GetService("Players")
 local LevelUpClass = require(script.Parent.LevelUpClass)
 local ProfileModule = require(script.Parent.ProfileData)
 
+while ProfileModule.Loaded() == false do
+	task.wait(2)
+end
 local profile = ProfileModule.GetProfile()
 
 local Data = {

@@ -123,6 +123,8 @@ End_Cutscene.Event:Connect(function()
     initColletions()
 end)
 
+
+
 LevelUpButton.Activated:Connect(function()
     
     if LevelUpGui.Enabled == false then
@@ -144,6 +146,9 @@ ShopFrame.ImageButton.Activated:Connect(function()
         ShopGui.Enabled = false
     end
 end)
+--On death or something idk
+PhoneHandler.init()
+initColletions()
 
 
 

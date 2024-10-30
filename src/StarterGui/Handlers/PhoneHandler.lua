@@ -66,6 +66,7 @@ end
 
 function PhoneHandler.init()
     local Phone : Tool = player:WaitForChild("Backpack"):FindFirstChild("Phone") or player.Character:FindFirstChild("Phone")
+    if not Phone then return end 
     Phone.Activated:Connect(function()
         if PhoneGui.Enabled == false then
             PhoneHandler.Open()
@@ -243,6 +244,9 @@ function PhoneHandler.onVideoClick(Data)
 end
 
 --Stronk
+while ProfileData.Loaded() == false do
+	task.wait(2)
+end
 local profile = ProfileData.GetProfile()
 local StronkData = {
     [1] = {
@@ -274,7 +278,7 @@ local StronkData = {
         Image = "rbxassetid://70774566978748",
         BaseCost = 100000,
         BaseIncome = 40,
-        UnlockLevel = 10,
+        UnlockLevel = 13,
     },
     [4] = {
         Title = "Cheat day",
@@ -284,7 +288,7 @@ local StronkData = {
         Image = "rbxassetid://109631826263073",
         BaseCost = 1000000,
         BaseIncome = 50,
-        UnlockLevel = 25,
+        UnlockLevel = 24,
     }
 }
 local profile = ProfileData.GetProfile()

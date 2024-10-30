@@ -1,11 +1,26 @@
 local MarketplaceService = game:GetService("MarketplaceService")
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ServerScriptService = game:GetService("ServerScriptService")
+
 local PlayerManager = require(ServerScriptService.Libraries.PlayerManager)
 
 local products = {
     [2317860444] = function(player)
-        print("DESTROY EVERYTHING")
+        for i = 10, 0, -1 do
+			task.wait(1)
+			ReplicatedStorage.Remotes.Nuke_Countdown:FireAllClients(i)
+        end
+        
+		for _, House in pairs(game.Workspace:GetChildren()) do
+			if House.Name == "Template" then
+				for _, HousePart in pairs(House:GetDescendants()) do
+					if HousePart:IsA("BasePart") then
+						HousePart.Anchored = false
+					end
+				end
+			end
+		end
         return true
     end,
     [2463459939] = function(player)

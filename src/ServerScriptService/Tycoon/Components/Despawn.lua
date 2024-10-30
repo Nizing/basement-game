@@ -10,9 +10,17 @@ function Despawn.new(tycoon, instance)
 end
 
 function Despawn:Init()
+    
     self.Tycoon:SubscribeTopic("Button" , function(id)
-        if id == self.Instance:GetAttribute("ID") then
-            self.Instance.Destroy()
+        if id == self.Instance:GetAttribute("Id") then
+            self.Instance:Destroy()
+        end
+    end)
+
+   
+    self.Tycoon:SubscribeTopic("DoorButton" , function(id)
+        if id == self.Instance:GetAttribute("Id") then
+            self.Instance:Destroy()
         end
     end)
 end

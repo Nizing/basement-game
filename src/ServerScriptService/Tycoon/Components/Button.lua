@@ -25,6 +25,7 @@ function Button:Init()
         task.wait(0.5)
         deb = false
     end)
+    
 end
 
 function Button:CreateBillboardGui()
@@ -106,11 +107,11 @@ function Button:Press(player)
     if player == self.Tycoon.Owner and money >= cost then
 		-- If it's a door
         if self.Instance:GetAttribute("door") then
-            if level < self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return end
+            if self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return end
             playSound(UnlockSoundId, player)
             PlayerManager:AddMoney(player, -cost)
             self.Tycoon:PublishTopic("DoorButton", id)
-            self.Instance:Destroy()
+            
         else -- if it's not a door
             
             if self.Instance:GetAttribute("Level") and level < self.Instance:GetAttribute("Level") then Level_Too_Low:FireClient(player) return end
@@ -119,7 +120,7 @@ function Button:Press(player)
             PlayerManager:AddMoney(player, -cost)
             PlayerManager:AddById(player, 1, "ItemCount")
             self.Tycoon:PublishTopic("Button", id)
-            self.Instance:Destroy()
+           
         end
     end
 end

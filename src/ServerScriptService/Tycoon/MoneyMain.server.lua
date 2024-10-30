@@ -22,6 +22,7 @@ local Level_Up : RemoteEvent = Remotes.Level_Up
 local Stronk_Buy : RemoteEvent = Remotes.Stronk_Buy
 local GamePass_Bought : RemoteEvent = Remotes.GamePass_Bought
 local Get_Profile : RemoteFunction = Remotes.Get_Profile
+local Get_Loaded : RemoteFunction = Remotes.Get_Loaded
 
 
 
@@ -44,6 +45,11 @@ end)
 
 Get_Profile.OnServerInvoke = function(player)
 	local Data = PlayerManager:GetData(player)
+	return Data
+end
+
+Get_Loaded.OnServerInvoke = function(player)
+	local Data = PlayerManager:Loaded(player)
 	return Data
 end
 
